@@ -30,7 +30,6 @@ export const getData = (search) => {
   return async (dispatch) => {
     dispatch(fetchRequest);
     try {
-      console.log(search);
       const response = await axiosOrder.get(search);
       dispatch(setCurrentData(response.data));
       dispatch(fetchSuccess());

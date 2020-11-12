@@ -25,7 +25,7 @@ const AlbumModel = new Schema({
     required: true,
   },
   year: {
-    type: Date,
+    type: String,
     default: new Date().getFullYear(),
   },
   image: { type: String, required: true },

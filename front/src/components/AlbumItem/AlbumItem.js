@@ -7,7 +7,6 @@ const useStyle = makeStyles((theme) => ({
     maxWidth: "400px",
     height: "100%",
     textTransform: "inherit",
-    margin: "10px",
   },
   image: {
     width: "300px",
@@ -19,7 +18,7 @@ const useStyle = makeStyles((theme) => ({
 const AlbumItem = ({ album, onClick }) => {
   const classes = useStyle();
   return (
-    <Grid>
+    <Grid item>
       <Button
         color="primary"
         onClick={onClick}

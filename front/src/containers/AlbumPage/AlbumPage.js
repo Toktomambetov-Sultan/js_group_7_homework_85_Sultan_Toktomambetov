@@ -18,7 +18,11 @@ const AlbumPage = (props) => {
     dispatch(getData("/albums?author=" + props.match.params.author));
     dispatch(setParentData(props.match.params));
   }, [dispatch, props.match.params]);
-  const onClick = (data) => {};
+  const onClick = (id) => {
+    props.history.push({
+      pathname: "/" + props.match.params.author + "/" + id,
+    });
+  };
 
   return (
     <div>
@@ -31,12 +35,12 @@ const AlbumPage = (props) => {
           Albums
         </Mlink>
       </Breadcrumbs>
-      <Grid container alignItems="stretch">
+      <Grid container alignItems="stretch" spacing={1}>
         {state.currentData.map((album) => (
           <AlbumItem
             key={album._id}
             album={album}
-            onClick={() => onClick(album)}
+            onClick={() => onClick(album._id)}
           />
         ))}
       </Grid>

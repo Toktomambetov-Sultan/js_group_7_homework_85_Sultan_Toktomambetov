@@ -39,8 +39,8 @@ router.post("/", async (req, res) => {
 
 // # if you need to use delete method for all tracks, look at down
 
-// router.delete("/", async (req, res) => {
-//   res.send(await schema.Track.deleteMany());
-// });
+router.delete("/", async (req, res) => {
+  res.send(await schema.Track.deleteMany());
+});
 
 module.exports = router;

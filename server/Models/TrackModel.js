@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const mongooseIdValidator = require("mongoose-id-validator");
+const { Track } = require("../Models");
 const Schema = mongoose.Schema;
 
 const TrackModel = new Schema({
@@ -26,8 +27,12 @@ const TrackModel = new Schema({
     type: Number,
     required: true,
   },
+  count: { type: Number, default: 0 },
 });
-
+TrackModel.pre("save", async function (next) {
+  this.count = (await mongoose.model("Track").countDocuments()) + 1;
+  next();
+});
 TrackModel.plugin(mongooseIdValidator);
 
 module.exports = TrackModel;

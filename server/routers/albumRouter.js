@@ -31,7 +31,7 @@ const upload = multer({
 router.get("/", async (req, res) => {
   let albums;
   try {
-    albums = await schema.Album.find(req.query).populate("author");
+    albums = await schema.Album.find(req.query).populate("author").sort({year: 1});
   } catch (error) {
     res.status(400).send(error);
   }

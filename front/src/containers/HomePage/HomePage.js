@@ -19,8 +19,8 @@ const HomePage = (props) => {
     dispatch(setParentData());
   }, [dispatch]);
 
-  const onClick = (data) => {
-    props.history.push({ pathname: "/" + data._id });
+  const onClick = (id) => {
+    props.history.push({ pathname: "/" + id });
   };
   return (
     <div>
@@ -35,7 +35,7 @@ const HomePage = (props) => {
           <AuthorItem
             key={author._id}
             author={author}
-            onClick={() => onClick(author)}
+            onClick={() => onClick(author._id)}
           />
         ))}
       </Grid>
