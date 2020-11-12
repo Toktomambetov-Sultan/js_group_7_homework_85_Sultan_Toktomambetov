@@ -1,6 +1,8 @@
 const mongoose = require("mongoose");
 const mongooseIdValidator = require("mongoose-id-validator");
 const Schema = mongoose.Schema;
+const fs = require("fs").promises;
+const config = require("../config");
 
 const AlbumModel = new Schema({
   name: {
@@ -22,17 +24,22 @@ const AlbumModel = new Schema({
     ref: "Author",
     required: true,
   },
-  image: { type: String, required: true },
-  __date: {
+  year: {
     type: Date,
-    default: Date.now,
+    default: new Date().getFullYear(),
   },
+  image: { type: String, required: true },
 });
 
 AlbumModel.plugin(mongooseIdValidator);
 
 AlbumModel.pre("deleteMany", async () => {
+  const data = await mongoose.model("Album").find();
   await mongoose.model("Track").deleteMany();
+  for (item of data) {
+    item.image &&
+      (await fs.unlink(config.ImageUploadingDir + "/" + item.image));
+  }
 });
 
 module.exports = AlbumModel;

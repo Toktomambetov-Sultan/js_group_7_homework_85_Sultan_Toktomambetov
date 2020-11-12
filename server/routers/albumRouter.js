@@ -38,33 +38,29 @@ router.get("/", async (req, res) => {
   res.send(albums);
 });
 
-
-
 router.post("/", upload.single("image"), async (req, res) => {
   try {
     const album = new schema.Album(req.body);
     album.image = req.file && req.file.filename;
+    console.log(album.image);
     await album.save();
     res.send(album);
   } catch (error) {
+    req.file &&
+      (await fs.unlink(config.ImageUploadingDir + "/" + req.file.filename));
     res.status(400).send(error);
   }
 });
 
 // # if you need to use delete method for all albums, look at down
 
-// router.delete("/", async (req, res) => {
-//   let ans;
-//   try {
-//     data = await schema.Album.find();
-//     ans = await schema.Album.deleteMany();
-//     for (item of data) {
-//       item.image && (await fs.unlink(config.ImageUploadingDir + "/" + item.image));
-//     }
-//   } catch (error) {
-//     res.send(error);
-//   }
-//   res.send(ans);
-// });
+router.delete("/", async (req, res) => {
+  try {
+    const ans = await schema.Album.deleteMany();
+    res.send(ans);
+  } catch (error) {
+    res.send(error);
+  }
+});
 
 module.exports = router;

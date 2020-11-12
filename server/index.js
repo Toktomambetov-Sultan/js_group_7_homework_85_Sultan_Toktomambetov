@@ -1,6 +1,8 @@
 const express = require("express");
 const config = require("./config");
 const mongoose = require("mongoose");
+const cors = require("cors");
+
 const app = express();
 
 const authorRouter = require("./routers/authorRouter");
@@ -23,7 +25,8 @@ const run = async () => {
     return;
   }
   console.log("Connected to mongodb.");
-
+  app.use(cors());
+  app.use(express.static("public"));
   app.use(express.json());
   app.use("/authors", authorRouter);
   app.use("/albums", albumRouter);

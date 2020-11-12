@@ -1,0 +1,5 @@
+export const FETCH_REQUEST = "FETCH_REQUEST";
+export const FETCH_SUCCESS = "FETCH_SUCCESS";
+export const FETCH_ERROR = "FETCH_ERROR";
+export const SET_CURRENT_DATA = "SET_CURRENT_DATA";
+export const SET_PARENT_DATA = "SET_PARENT_DATA";

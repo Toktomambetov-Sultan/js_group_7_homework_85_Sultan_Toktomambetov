@@ -1,5 +1,7 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
+const fs = require("fs").promises;
+const config = require("../config");
 
 const AuthorModel = new Schema({
   name: {
@@ -22,7 +24,12 @@ const AuthorModel = new Schema({
 });
 
 AuthorModel.pre("deleteMany", async () => {
+  const data = await mongoose.model("Author").find();
   await mongoose.model("Album").deleteMany();
+  for (item of data) {
+    item.image &&
+      (await fs.unlink(config.ImageUploadingDir + "/" + item.image));
+  }
 });
 
 module.exports = AuthorModel;

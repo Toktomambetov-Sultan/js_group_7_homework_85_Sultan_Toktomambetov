@@ -5,6 +5,7 @@ const path = require("path");
 const config = require("../config");
 const { nanoid } = require("nanoid");
 const router = express.Router();
+const fs = require("fs").promises;
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -27,7 +28,7 @@ const upload = multer({
 });
 
 router.get("/", async (req, res) => {
-  res.send(await schema.Author.find());
+  res.send(await schema.Author.find(req.query));
 });
 
 router.post("/", upload.single("image"), async (req, res) => {
@@ -37,24 +38,21 @@ router.post("/", upload.single("image"), async (req, res) => {
     await author.save();
     res.send(author);
   } catch (error) {
+    req.file &&
+      (await fs.unlink(config.ImageUploadingDir + "/" + req.file.filename));
     res.send(error);
   }
 });
 
 // # if you need to use delete method for all authors, look at down
 
-// router.delete("/", async (req, res) => {
-//   let ans;
-//   try {
-//     const data = await schema.Author.find();
-//     ans = await schema.Author.deleteMany();
-//     for (item of data) {
-//       item.image && (await fs.unlink(config.ImageUploadingDir + "/" + item.image));
-//     }
-//   } catch (error) {
-//     res.send(error);
-//   }
-//   res.send(ans);
-// });
+router.delete("/", async (req, res) => {
+  try {
+    const ans = await schema.Author.deleteMany();
+    res.send(ans);
+  } catch (error) {
+    res.send(error);
+  }
+});
 
 module.exports = router;
