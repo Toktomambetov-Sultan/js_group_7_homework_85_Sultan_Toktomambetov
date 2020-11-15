@@ -8,16 +8,6 @@ const AlbumModel = new Schema({
   name: {
     type: String,
     required: true,
-    unique: true,
-    validate: {
-      validator: async (value) => {
-        const author = await mongoose.model("Album").findOne({ name: value });
-        if (author) return false;
-      },
-      message: (props) => {
-        return `Album property ${props.path} already exists.`;
-      },
-    },
   },
   author: {
     type: Schema.Types.ObjectId,
@@ -25,7 +15,7 @@ const AlbumModel = new Schema({
     required: true,
   },
   year: {
-    type: String,
+    type: Number,
     default: new Date().getFullYear(),
   },
   image: { type: String, required: true },

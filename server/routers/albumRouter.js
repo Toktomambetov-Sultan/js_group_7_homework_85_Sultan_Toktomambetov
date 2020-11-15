@@ -42,7 +42,6 @@ router.post("/", upload.single("image"), async (req, res) => {
   try {
     const album = new schema.Album(req.body);
     album.image = req.file && req.file.filename;
-    console.log(album.image);
     await album.save();
     res.send(album);
   } catch (error) {

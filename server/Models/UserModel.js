@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 const { User } = require("../Models");
 const { nanoid } = require("nanoid");
+const uniqueValidate = require("../tools/models/uniqueValidate");
 const Schema = mongoose.Schema;
 
 const UserModel = new Schema({
@@ -9,6 +10,7 @@ const UserModel = new Schema({
     type: String,
     required: true,
     unique: true,
+    validate: uniqueValidate("User", "username"),
   },
   password: {
     required: true,
