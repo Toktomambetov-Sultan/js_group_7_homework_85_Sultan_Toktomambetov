@@ -3,3 +3,4 @@ export const FETCH_SUCCESS = "FETCH_SUCCESS";
 export const FETCH_ERROR = "FETCH_ERROR";
 export const SET_CURRENT_DATA = "SET_CURRENT_DATA";
 export const SET_PARENT_DATA = "SET_PARENT_DATA";
+export const SET_PAGE_PARAMS = "SET_PAGE_PARAMS";

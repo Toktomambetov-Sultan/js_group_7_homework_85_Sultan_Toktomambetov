@@ -4,6 +4,7 @@ import {
   FETCH_ERROR,
   SET_CURRENT_DATA,
   SET_PARENT_DATA,
+  SET_PAGE_PARAMS,
 } from "../actionsTypes";
 import axiosOrder from "../../axiosOrder";
 
@@ -26,6 +27,13 @@ const setParentDataAction = (data) => {
   return { type: SET_PARENT_DATA, data };
 };
 
+export const setPageParams = (props) => {
+  return {
+    type: SET_PAGE_PARAMS,
+    params: props.match.params,
+  };
+};
+
 export const getData = (search) => {
   return async (dispatch) => {
     dispatch(fetchRequest);
@@ -43,15 +51,21 @@ export const setParentData = (params) => {
     dispatch(fetchRequest);
     try {
       let search;
+      if (!params) {
+        dispatch(setParentDataAction({}));
+        return;
+      }
       if (params.album) {
         search = "albums?_id=" + params.album;
       } else if (params.author) {
         search = "authors?_id=" + params.author;
-      } else {
-        return;
       }
       const response = await axiosOrder.get(search);
-      dispatch(setParentDataAction(response.data[0]));
+      const data = dispatch(
+        setParentDataAction({
+          [params.album ? "album" : "author"]: response.data[0],
+        })
+      );
       dispatch(fetchSuccess());
     } catch (error) {
       dispatch(fetchError(error));

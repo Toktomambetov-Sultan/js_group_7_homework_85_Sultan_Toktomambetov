@@ -9,7 +9,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import AuthorItem from "../../components/AuthorItem/AuthorItem";
 import config from "../../config";
-import { getData, setParentData } from "../../store/music/musicActions";
+import {
+  getData,
+  setPageParams,
+  setParentData,
+} from "../../store/music/musicActions";
 
 const HomePage = (props) => {
   const state = useSelector((state) => state.music);
@@ -18,6 +22,7 @@ const HomePage = (props) => {
   useEffect(() => {
     dispatch(getData("authors"));
     dispatch(setParentData());
+    dispatch(setPageParams(props));
   }, [dispatch]);
 
   const onClick = (id) => {
@@ -26,15 +31,6 @@ const HomePage = (props) => {
   return (
     <div>
       <CssBaseline />
-      <Breadcrumbs aria-label="breadcrumb">
-        <Mlink
-          color="inherit"
-          component={Link}
-          to={`${config.localUrls.music}/`}
-        >
-          Authors
-        </Mlink>
-      </Breadcrumbs>
       <Grid container alignItems="stretch">
         {state.currentData.map((author) => (
           <AuthorItem
