@@ -1,37 +1,15 @@
 const express = require("express");
-const multer = require("multer");
 const schema = require("./../Models");
-const path = require("path");
 const config = require("../config");
-const { nanoid } = require("nanoid");
+const uploadImage = require("../tools/routers/uploadImg");
 const router = express.Router();
 const fs = require("fs").promises;
-
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, config.ImageUploadingDir);
-  },
-  filename: function (req, file, cb) {
-    cb(null, nanoid() + "-" + file.originalname);
-  },
-});
-
-const upload = multer({
-  storage: storage,
-  fileFilter: (req, file, callback) => {
-    const ext = path.extname(file.originalname);
-    if (ext !== ".png" && ext !== ".jpg" && ext !== ".gif" && ext !== ".jpeg") {
-      return callback(null, false);
-    }
-    callback(null, true);
-  },
-});
 
 router.get("/", async (req, res) => {
   res.send(await schema.Author.find(req.query));
 });
 
-router.post("/", upload.single("image"), async (req, res) => {
+router.post("/", uploadImage.single("image"), async (req, res) => {
   try {
     const author = new schema.Author(req.body);
     author.image = req.file && req.file.filename;
