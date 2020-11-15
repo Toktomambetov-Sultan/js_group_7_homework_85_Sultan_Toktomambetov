@@ -8,10 +8,11 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import AuthorItem from "../../components/AuthorItem/AuthorItem";
-import { getData, setParentData } from "../../store/actions";
+import config from "../../config";
+import { getData, setParentData } from "../../store/music/musicActions";
 
 const HomePage = (props) => {
-  const state = useSelector((state) => state);
+  const state = useSelector((state) => state.music);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -20,13 +21,17 @@ const HomePage = (props) => {
   }, [dispatch]);
 
   const onClick = (id) => {
-    props.history.push({ pathname: "/" + id });
+    props.history.push({ pathname: `${config.localUrls.music}/${id}` });
   };
   return (
     <div>
       <CssBaseline />
       <Breadcrumbs aria-label="breadcrumb">
-        <Mlink color="inherit" component={Link} to="/">
+        <Mlink
+          color="inherit"
+          component={Link}
+          to={`${config.localUrls.music}/`}
+        >
           Authors
         </Mlink>
       </Breadcrumbs>

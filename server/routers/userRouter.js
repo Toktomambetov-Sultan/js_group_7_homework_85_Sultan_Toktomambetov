@@ -32,7 +32,7 @@ router.post("/sessions", async (req, res) => {
 
   if (!isMatch) res.status(400).send({ error: "Password is wrong." });
   user.generateToken();
-  await user.save();
+  await user.save({ validateBeforeSave: false });
 
   res.send({ message: "Username and password correct.", user });
 });

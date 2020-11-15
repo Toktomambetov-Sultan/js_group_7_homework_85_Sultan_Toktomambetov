@@ -4,8 +4,8 @@ import {
   FETCH_ERROR,
   SET_CURRENT_DATA,
   SET_PARENT_DATA,
-} from "./actionsTypes";
-import axiosOrder from "../axiosOrder";
+} from "../actionsTypes";
+import axiosOrder from "../../axiosOrder";
 
 const fetchRequest = () => {
   return { type: FETCH_REQUEST };

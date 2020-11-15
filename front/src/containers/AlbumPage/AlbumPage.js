@@ -8,10 +8,11 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import AlbumItem from "../../components/AlbumItem/AlbumItem";
-import { getData, setParentData } from "../../store/actions";
+import config from "../../config";
+import { getData, setParentData } from "../../store/music/musicActions";
 
 const AlbumPage = (props) => {
-  const state = useSelector((state) => state);
+  const state = useSelector((state) => state.music);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -20,7 +21,7 @@ const AlbumPage = (props) => {
   }, [dispatch, props.match.params]);
   const onClick = (id) => {
     props.history.push({
-      pathname: "/" + props.match.params.author + "/" + id,
+      pathname: `${config.localUrls.music}/${props.match.params.author}/${id}`,
     });
   };
 
@@ -28,10 +29,18 @@ const AlbumPage = (props) => {
     <div>
       <CssBaseline />
       <Breadcrumbs aria-label="breadcrumb">
-        <Mlink color="inherit" component={Link} to="/">
+        <Mlink
+          color="inherit"
+          component={Link}
+          to={`${config.localUrls.music}/`}
+        >
           {String(state.parentData?.name)}
         </Mlink>
-        <Mlink color="inherit" component={Link} to={props.match.params.author}>
+        <Mlink
+          color="inherit"
+          component={Link}
+          to={`${config.localUrls.music}/${props.match.params.author}`}
+        >
           Albums
         </Mlink>
       </Breadcrumbs>

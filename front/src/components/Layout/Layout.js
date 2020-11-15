@@ -1,11 +1,22 @@
-import { Box, Container } from "@material-ui/core";
+import { AppBar, Box, Container, Toolbar } from "@material-ui/core";
 import React from "react";
 
 const Layout = ({ children }) => {
+
   return (
-    <Box component={Container} pt={2}>
-      {children}
-    </Box>
+    <div>
+      <AppBar position="static">
+        <Toolbar>
+          <Container>
+            asd
+          </Container>
+        </Toolbar>
+      </AppBar>
+
+      <Box component="main" paddingTop="5px">
+        <Container>{children}</Container>
+      </Box>
+    </div>
   );
 };
 

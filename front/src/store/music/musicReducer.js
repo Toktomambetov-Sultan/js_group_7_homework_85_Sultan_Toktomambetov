@@ -4,7 +4,7 @@ import {
   FETCH_ERROR,
   SET_CURRENT_DATA,
   SET_PARENT_DATA,
-} from "./actionsTypes";
+} from "../actionsTypes";
 
 const initialState = {
   currentData: [],
@@ -12,7 +12,7 @@ const initialState = {
   isLoading: false,
   error: null,
 };
-const reducer = (state = initialState, action) => {
+const musicReducer = (state = initialState, action) => {
   switch (action.type) {
     case FETCH_REQUEST:
       return {
@@ -45,4 +45,4 @@ const reducer = (state = initialState, action) => {
   }
 };
 
-export default reducer;
+export default musicReducer;

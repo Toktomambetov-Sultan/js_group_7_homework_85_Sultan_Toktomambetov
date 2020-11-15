@@ -2,19 +2,33 @@ import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./App";
-import { BrowserRouter } from "react-router-dom";
-import reducer from "./store/reducer";
-import { applyMiddleware, createStore } from "redux";
+import musicReducer from "./store/music/musicReducer";
+import { applyMiddleware, combineReducers, createStore } from "redux";
 import thunk from "redux-thunk";
 import { Provider } from "react-redux";
+import { createBrowserHistory } from "history";
+import {
+  connectRouter,
+  routerMiddleware,
+  ConnectedRouter,
+} from "connected-react-router";
 
-const store = createStore(reducer, applyMiddleware(thunk));
+const history = createBrowserHistory();
+
+const rootReducer = combineReducers({
+  music: musicReducer,
+  router: connectRouter(history),
+});
+
+const middleware = [thunk, routerMiddleware(history)];
+
+const store = createStore(rootReducer, applyMiddleware(...middleware));
 
 const app = (
   <Provider store={store}>
-    <BrowserRouter>
+    <ConnectedRouter history={history}>
       <App />
-    </BrowserRouter>
+    </ConnectedRouter>
   </Provider>
 );
 

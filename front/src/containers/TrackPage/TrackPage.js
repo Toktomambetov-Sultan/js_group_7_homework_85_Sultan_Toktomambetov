@@ -8,10 +8,11 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import TrackItem from "../../components/TrackItem/TrackItem";
-import { getData, setParentData } from "../../store/actions";
+import config from "../../config";
+import { getData, setParentData } from "../../store/music/musicActions";
 
 const TrackPage = (props) => {
-  const state = useSelector((state) => state);
+  const state = useSelector((state) => state.music);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -33,14 +34,14 @@ const TrackPage = (props) => {
         <Mlink
           color="inherit"
           component={Link}
-          to={"/" + props.match.params.author}
+          to={`${config.localUrls.music}/${props.match.params.author}`}
         >
           {String(state.parentData?.name)}
         </Mlink>
         <Mlink
           color="inherit"
           component={Link}
-          to={"/" + props.match.params.author + "/" + props.match.params.album}
+          to={`${config.localUrls.music}/${props.match.params.author}/${props.match.params.album}`}
         >
           Tracks
         </Mlink>
