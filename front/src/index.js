@@ -3,6 +3,7 @@ import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./App";
 import musicReducer from "./store/music/musicReducer";
+import userReducer from "./store/user/userReducer";
 import { applyMiddleware, combineReducers, createStore } from "redux";
 import thunk from "redux-thunk";
 import { Provider } from "react-redux";
@@ -17,6 +18,7 @@ const history = createBrowserHistory();
 
 const rootReducer = combineReducers({
   music: musicReducer,
+  user: userReducer,
   router: connectRouter(history),
 });
 

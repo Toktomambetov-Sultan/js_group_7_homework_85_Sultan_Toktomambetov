@@ -34,7 +34,11 @@ router.post("/sessions", async (req, res) => {
   user.generateToken();
   await user.save({ validateBeforeSave: false });
 
-  res.send({ message: "Username and password correct.", user });
+  res.send(user);
+});
+
+router.delete("/", async (req, res) => {
+  return res.send(await schema.User.deleteMany());
 });
 
 module.exports = router;

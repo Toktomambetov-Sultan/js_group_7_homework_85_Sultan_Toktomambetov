@@ -15,7 +15,7 @@ import {
   setParentData,
 } from "../../store/music/musicActions";
 
-const HomePage = (props) => {
+const AuthorPage = (props) => {
   const state = useSelector((state) => state.music);
   const dispatch = useDispatch();
 
@@ -44,4 +44,4 @@ const HomePage = (props) => {
   );
 };
 
-export default HomePage;
+export default AuthorPage;
