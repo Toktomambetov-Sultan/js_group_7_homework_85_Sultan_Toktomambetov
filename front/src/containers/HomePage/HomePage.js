@@ -7,7 +7,7 @@ const HomePage = () => {
   return (
     <Container>
       <Box pt={10}>
-        <Grid container>
+        <Grid container spacing={5}>
           <Grid item xs={12} md={6}>
             <RegistrationPage />
           </Grid>

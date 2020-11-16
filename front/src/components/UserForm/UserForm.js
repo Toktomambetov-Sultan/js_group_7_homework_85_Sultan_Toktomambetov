@@ -8,8 +8,10 @@ import {
   Typography,
 } from "@material-ui/core";
 import React from "react";
+import { useSelector } from "react-redux";
 
 const UserForm = ({ title, icon, color, user, onChange, onSubmit, error }) => {
+  const isLoading = useSelector((state) => state.user.isLoading);
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
@@ -49,7 +51,13 @@ const UserForm = ({ title, icon, color, user, onChange, onSubmit, error }) => {
             autoComplete="current-password"
           />
           <Box pt="10px">
-            <Button type="submit" fullWidth variant="contained" color="primary">
+            <Button
+              disabled={isLoading}
+              type="submit"
+              fullWidth
+              variant="contained"
+              color="primary"
+            >
               {title}
             </Button>
           </Box>

@@ -1,15 +1,10 @@
-import {
-  CssBaseline,
-  Grid,
-} from "@material-ui/core";
+import { CssBaseline, Grid } from "@material-ui/core";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+
 import AuthorItem from "../../components/AuthorItem/AuthorItem";
 import config from "../../config";
-import {
-  getData,
-  setParentData,
-} from "../../store/music/musicActions";
+import { getData, setParentData } from "../../store/music/musicActions";
 
 const Page = (props) => {
   const state = useSelector((state) => state.music);
@@ -23,6 +18,7 @@ const Page = (props) => {
   const onClick = (id) => {
     props.history.push({ pathname: `${config.localUrls.music}/${id}` });
   };
+  
   return (
     <div>
       <CssBaseline />

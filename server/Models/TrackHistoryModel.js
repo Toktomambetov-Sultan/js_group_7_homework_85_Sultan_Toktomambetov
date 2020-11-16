@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const mongooseIdValidator = require("mongoose-id-validator");
+const uniqueValidate = require("../tools/models/uniqueValidate");
 const Schema = mongoose.Schema;
 
 const TrackHistoryModel = new Schema({
@@ -12,6 +13,8 @@ const TrackHistoryModel = new Schema({
     type: Schema.Types.ObjectId,
     ref: "Track",
     required: true,
+    unique: true,
+    validate: uniqueValidate("TrackHistory", "track"),
   },
   __datetime: {
     type: Date,

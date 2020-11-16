@@ -4,8 +4,9 @@ const uploadImage = require("../tools/routers/uploadImg");
 const schema = require("./../Models");
 const fs = require("fs").promises;
 const router = express.Router();
+const authorizationMiddleware = require("./../tools/routers/authorizationMiddleware");
 
-router.get("/", async (req, res) => {
+router.get("/", authorizationMiddleware, async (req, res) => {
   let albums;
   try {
     albums = (await schema.Album.find(req.query).populate("author")).sort(
@@ -32,13 +33,13 @@ router.post("/", uploadImage.single("image"), async (req, res) => {
 
 // # if you need to use delete method for all albums, look at down
 
-router.delete("/", async (req, res) => {
-  try {
-    const ans = await schema.Album.deleteMany();
-    res.send(ans);
-  } catch (error) {
-    res.send(error);
-  }
-});
+// router.delete("/", async (req, res) => {
+//   try {
+//     const ans = await schema.Album.deleteMany();
+//     res.send(ans);
+//   } catch (error) {
+//     res.send(error);
+//   }
+// });
 
 module.exports = router;

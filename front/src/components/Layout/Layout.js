@@ -1,8 +1,16 @@
-import { AppBar, Box, Container, Toolbar } from "@material-ui/core";
+import {
+  AppBar,
+  Box,
+  Container,
+  Grid,
+  Toolbar,
+  Typography,
+} from "@material-ui/core";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setParentData } from "../../store/music/musicActions";
 import MusicNavigation from "../MusicNavigation/MusicNavigation";
+import { Link } from "react-router-dom";
 
 const parseMusicTree = (data) => {
   const list = [];
@@ -35,14 +43,32 @@ const Layout = ({ children }) => {
   const dispatch = useDispatch();
   useEffect(() => {
     Object.keys(state.pageParams).length &&
-      dispatch(setParentData(state.pageParams));
+    dispatch(setParentData(state.pageParams));
   }, [dispatch, state.pageParams]);
   return (
     <div>
       <AppBar position="static">
         <Toolbar>
           <Container>
-            <MusicNavigation paths={parseMusicTree(state.parentData)} />
+            <Grid container justify="space-between" alignItems="center">
+              <MusicNavigation paths={parseMusicTree(state.parentData)} />
+              <Box
+                component={Link}
+                to="/track_history"
+                style={{ textDecoration: "none" }}
+                color="white"
+              >
+                Track history
+              </Box>
+              <Box
+                component={Link}
+                to="/"
+                style={{ textDecoration: "none" }}
+                color="white"
+              >
+                <Typography variant="h4">Music App</Typography>
+              </Box>
+            </Grid>
           </Container>
         </Toolbar>
       </AppBar>

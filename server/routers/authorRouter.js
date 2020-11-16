@@ -4,8 +4,9 @@ const config = require("../config");
 const uploadImage = require("../tools/routers/uploadImg");
 const router = express.Router();
 const fs = require("fs").promises;
+const authorizationMiddleware = require("./../tools/routers/authorizationMiddleware");
 
-router.get("/", async (req, res) => {
+router.get("/", authorizationMiddleware, async (req, res) => {
   res.send(await schema.Author.find(req.query));
 });
 

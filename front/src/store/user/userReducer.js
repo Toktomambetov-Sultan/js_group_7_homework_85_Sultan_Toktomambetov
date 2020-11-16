@@ -24,7 +24,7 @@ const reducer = (state = InittialState, action) => {
     case FETCH_U_SUCCESS:
       return {
         ...state,
-        isLoading: true,
+        isLoading: false,
       };
     case FETCH_AUTHORIZATION_ERROR: {
       return {

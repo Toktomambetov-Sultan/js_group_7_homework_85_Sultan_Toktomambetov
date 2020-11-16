@@ -27,10 +27,13 @@ const setParentDataAction = (data) => {
 };
 
 export const getData = (search) => {
-  return async (dispatch) => {
+  return async (dispatch, getState) => {
     dispatch(fetchRequest);
     try {
-      const response = await axiosOrder.get(search);
+      const headers = {
+        Authorization: getState().user.user?.token,
+      };
+      const response = await axiosOrder.get(search, {headers});
       dispatch(setCurrentData(response.data));
       dispatch(fetchSuccess());
     } catch (error) {
@@ -39,7 +42,7 @@ export const getData = (search) => {
   };
 };
 export const setParentData = (params) => {
-  return async (dispatch) => {
+  return async (dispatch, getState) => {
     dispatch(fetchRequest);
     try {
       let search;
@@ -52,7 +55,10 @@ export const setParentData = (params) => {
       } else if (params.author) {
         search = "authors?_id=" + params.author;
       }
-      const response = await axiosOrder.get(search);
+      const headers = {
+        "Authorization": getState().user.user?.token,
+      };
+      const response = await axiosOrder.get(search, {headers});
       dispatch(
         setParentDataAction({
           [params.album ? "album" : "author"]: response.data[0],

@@ -2,7 +2,9 @@ const express = require("express");
 const router = express.Router();
 const schema = require("./../Models");
 
-router.get("/", async (req, res) => {
+const authorizationMiddleware = require("./../tools/routers/authorizationMiddleware");
+
+router.get("/", authorizationMiddleware, async (req, res) => {
   try {
     const tracksAll = await schema.Track.find().populate({
       path: "album",
