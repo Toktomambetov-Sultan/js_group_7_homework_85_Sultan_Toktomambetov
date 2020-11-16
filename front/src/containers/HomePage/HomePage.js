@@ -11,9 +11,9 @@ const HomePage = () => {
           <Grid item xs={12} md={6}>
             <RegistrationPage />
           </Grid>
-          {/* <Grid item xs={12} md={6}>
+          <Grid item xs={12} md={6}>
             <AuthorizationPage />
-          </Grid> */}
+          </Grid>
         </Grid>
       </Box>
     </Container>

@@ -26,11 +26,21 @@ router.post("/", async (req, res) => {
 router.post("/sessions", async (req, res) => {
   const user = await schema.User.findOne({ username: req.body.username });
 
-  if (!user) return res.status(400).send({ error: "username not found." });
+  if (!user)
+    return res.status(400).send({
+      error: {
+        username: { message: "Username not found." },
+      },
+    });
 
   const isMatch = await user.checkPassword(req.body.password);
 
-  if (!isMatch) res.status(400).send({ error: "Password is wrong." });
+  if (!isMatch)
+    res.status(400).send({
+      error: {
+        password: { message: "Password is wrong." },
+      },
+    });
   user.generateToken();
   await user.save({ validateBeforeSave: false });
 
