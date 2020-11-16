@@ -1,11 +1,12 @@
 import { push } from "connected-react-router";
-
-const {
+import axiosOrder from "./../../axiosOrder";
+import {
   FETCH_U_REQUEST,
   FETCH_U_SUCCESS,
   FETCH_REGISTRATION_ERROR,
   SET_USER_DATA,
-} = require("../actionsTypes");
+  FETCH_AUTHORIZATION_ERROR,
+} from "../actionsTypes";
 
 const fetchRequest = () => {
   return {
@@ -40,7 +41,7 @@ const setUserData = (data) => {
   };
 };
 
-export const Registration = (data) => {
+export const registration = (data) => {
   return async (dispatch) => {
     dispatch(fetchRequest());
     try {
@@ -49,12 +50,12 @@ export const Registration = (data) => {
       dispatch(fetchSuccess());
       dispatch(push("/music"));
     } catch (error) {
-      dispatch(fetchRegistrationError(error));
+      dispatch(fetchRegistrationError(error.response.data));
     }
   };
 };
 
-export const Authorization = (data) => {
+export const authorization = (data) => {
   return async (dispatch) => {
     dispatch(fetchRequest());
     try {
@@ -63,7 +64,7 @@ export const Authorization = (data) => {
       dispatch(fetchSuccess());
       dispatch(push("/music"));
     } catch (error) {
-      dispatch(fetchAuthorizationError(error));
+      dispatch(fetchAuthorizationError(error.data));
     }
   };
 };

@@ -1,15 +1,12 @@
-import {
-  Breadcrumbs,
-  CssBaseline,
-  Grid,
-  Link as Mlink,
-} from "@material-ui/core";
+import { CssBaseline, Grid } from "@material-ui/core";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
 import AlbumItem from "../../components/AlbumItem/AlbumItem";
 import config from "../../config";
-import { getData, setPageParams, setParentData } from "../../store/music/musicActions";
+import {
+  getData,
+  setParentData,
+} from "../../store/music/musicActions";
 
 const AlbumPage = (props) => {
   const state = useSelector((state) => state.music);
@@ -18,8 +15,7 @@ const AlbumPage = (props) => {
   useEffect(() => {
     dispatch(getData("/albums?author=" + props.match.params.author));
     dispatch(setParentData(props.match.params));
-    dispatch(setPageParams(props));
-  }, [dispatch, props.match.params]);
+  }, [dispatch, props.match.params,props]);
   const onClick = (id) => {
     props.history.push({
       pathname: `${config.localUrls.music}/${props.match.params.author}/${id}`,

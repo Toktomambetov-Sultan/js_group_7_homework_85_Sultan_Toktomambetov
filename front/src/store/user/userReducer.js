@@ -7,7 +7,7 @@ import {
 } from "../actionsTypes";
 
 const InittialState = {
-  currentUser: {},
+  user: {},
   authorizationError: null,
   registrationError: null,
   isLoading: false,
@@ -43,7 +43,7 @@ const reducer = (state = InittialState, action) => {
     case SET_USER_DATA:
       return {
         ...state,
-        currentUser: action.data,
+        user: action.data,
       };
     default:
       return state;

@@ -4,7 +4,6 @@ import {
   FETCH_ERROR,
   SET_CURRENT_DATA,
   SET_PARENT_DATA,
-  SET_PAGE_PARAMS,
 } from "../actionsTypes";
 import axiosOrder from "../../axiosOrder";
 
@@ -25,13 +24,6 @@ const setCurrentData = (data) => {
 
 const setParentDataAction = (data) => {
   return { type: SET_PARENT_DATA, data };
-};
-
-export const setPageParams = (props) => {
-  return {
-    type: SET_PAGE_PARAMS,
-    params: props.match.params,
-  };
 };
 
 export const getData = (search) => {
@@ -61,7 +53,7 @@ export const setParentData = (params) => {
         search = "authors?_id=" + params.author;
       }
       const response = await axiosOrder.get(search);
-      const data = dispatch(
+      dispatch(
         setParentDataAction({
           [params.album ? "album" : "author"]: response.data[0],
         })

@@ -1,15 +1,8 @@
-import {
-  Breadcrumbs,
-  CssBaseline,
-  Grid,
-  Link as Mlink,
-} from "@material-ui/core";
+import { CssBaseline, Grid } from "@material-ui/core";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
 import TrackItem from "../../components/TrackItem/TrackItem";
-import config from "../../config";
-import { getData, setPageParams, setParentData } from "../../store/music/musicActions";
+import { getData, setParentData } from "../../store/music/musicActions";
 
 const TrackPage = (props) => {
   const state = useSelector((state) => state.music);
@@ -18,7 +11,6 @@ const TrackPage = (props) => {
   useEffect(() => {
     dispatch(getData("/tracks?album=" + props.match.params.album));
     dispatch(setParentData(props.match.params));
-    dispatch(setPageParams(props));
   }, [dispatch, props.match.params]);
   const onClick = (id) => {
     props.history.push({

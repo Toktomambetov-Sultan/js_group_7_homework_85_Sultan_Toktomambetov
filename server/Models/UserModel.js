@@ -15,6 +15,14 @@ const UserModel = new Schema({
   password: {
     required: true,
     type: String,
+    validate: {
+      validator: (value) => {
+        return /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{6,}$/g.test(
+          value
+        );
+      },
+      message: "Password is very ease.",
+    },
   },
   token: {
     type: String,

@@ -4,14 +4,12 @@ import {
   Button,
   Container,
   CssBaseline,
-  Grid,
-  Link,
   TextField,
   Typography,
 } from "@material-ui/core";
 import React from "react";
 
-const UserForm = ({ title, icon, color, user }) => {
+const UserForm = ({ title, icon, color, user, onChange, onSubmit, error }) => {
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
@@ -24,26 +22,30 @@ const UserForm = ({ title, icon, color, user }) => {
             {title}
           </Typography>
         </Box>
-        <form>
+        <form onSubmit={onSubmit}>
           <TextField
             variant="outlined"
             margin="normal"
+            error={!!error?.username}
             required
             fullWidth
-            label="Username"
+            label={error?.username?.message || "Username"}
             name="username"
-            value={user.name}
+            value={user.username}
+            onChange={onChange}
             autoFocus
           />
           <TextField
             variant="outlined"
             margin="normal"
+            error={!!error?.password}
             required
             fullWidth
             name="password"
-            label="Password"
+            label={error?.password?.message || "Password"}
             type="password"
             value={user.password}
+            onChange={onChange}
             autoComplete="current-password"
           />
           <Box pt="10px">
