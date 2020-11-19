@@ -43,7 +43,7 @@ const Layout = ({ children }) => {
   const dispatch = useDispatch();
   useEffect(() => {
     Object.keys(state.pageParams).length &&
-    dispatch(setParentData(state.pageParams));
+      dispatch(setParentData(state.pageParams));
   }, [dispatch, state.pageParams]);
   return (
     <div>
@@ -51,6 +51,7 @@ const Layout = ({ children }) => {
         <Toolbar>
           <Container>
             <Grid container justify="space-between" alignItems="center">
+              <Typography variant="h4">Music App</Typography>
               <MusicNavigation paths={parseMusicTree(state.parentData)} />
               <Box
                 component={Link}
@@ -59,14 +60,6 @@ const Layout = ({ children }) => {
                 color="white"
               >
                 Track history
-              </Box>
-              <Box
-                component={Link}
-                to="/"
-                style={{ textDecoration: "none" }}
-                color="white"
-              >
-                <Typography variant="h4">Music App</Typography>
               </Box>
             </Grid>
           </Container>

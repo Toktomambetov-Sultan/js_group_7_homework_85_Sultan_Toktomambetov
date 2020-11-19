@@ -8,6 +8,7 @@ import { connectRouter, routerMiddleware } from "connected-react-router";
 import tracksReducer from "./track/trackReducer";
 import authorReducer from "./author/authorReducer";
 import albumReducer from "./album/albumReducer";
+import { loadFromLocalStorage, saveToLocalStorage } from "./localStoragesTools";
 
 export const history = createBrowserHistory();
 
@@ -23,6 +24,20 @@ const rootReducer = combineReducers({
 
 const middleware = [thunk, routerMiddleware(history)];
 
-const store = createStore(rootReducer, applyMiddleware(...middleware));
+const persistedState = loadFromLocalStorage();
+
+const store = createStore(
+  rootReducer,
+  persistedState,
+  applyMiddleware(...middleware)
+);
+
+store.subscribe(() => {
+  saveToLocalStorage({
+    user: {
+      user: store.getState().user.user,
+    },
+  });
+});
 
 export default store;
