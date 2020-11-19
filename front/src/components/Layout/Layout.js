@@ -1,6 +1,7 @@
 import {
   AppBar,
   Box,
+  Button,
   Container,
   Grid,
   Toolbar,
@@ -11,6 +12,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setParentData } from "../../store/music/musicActions";
 import MusicNavigation from "../MusicNavigation/MusicNavigation";
 import { Link } from "react-router-dom";
+import { logOut } from "../../store/user/userActions";
 
 const parseMusicTree = (data) => {
   const list = [];
@@ -45,6 +47,10 @@ const Layout = ({ children }) => {
     Object.keys(state.pageParams).length &&
       dispatch(setParentData(state.pageParams));
   }, [dispatch, state.pageParams]);
+  const logOutHandler = () => {
+    dispatch(logOut());
+  };
+
   return (
     <div>
       <AppBar position="static">
@@ -61,6 +67,13 @@ const Layout = ({ children }) => {
               >
                 Track history
               </Box>
+              <Button
+                variant="outlined"
+                color="secondary"
+                onClick={logOutHandler}
+              >
+                Log out
+              </Button>
             </Grid>
           </Container>
         </Toolbar>

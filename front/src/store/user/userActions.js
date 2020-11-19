@@ -68,3 +68,20 @@ export const authorization = (data) => {
     }
   };
 };
+
+export const logOut = () => {
+  return async (dispatch, getState) => {
+    dispatch(fetchRequest());
+    try {
+      const headers = {
+        Authorization: getState().user.user?.token,
+      };
+      await axiosOrder.post("/users/log-out", "", { headers });
+      dispatch(setUserData(null));
+      dispatch(push("/"));
+      dispatch(fetchSuccess());
+    } catch (error) {
+      dispatch(fetchAuthorizationError(error.response?.data));
+    }
+  };
+};

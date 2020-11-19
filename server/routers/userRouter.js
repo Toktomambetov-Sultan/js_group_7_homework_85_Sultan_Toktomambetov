@@ -2,6 +2,7 @@ const express = require("express");
 const schema = require("./../Models");
 const router = express.Router();
 const bcrypt = require("bcrypt");
+const authorizationMiddleware = require("./../tools/routers/authorizationMiddleware");
 
 router.get("/", async (req, res) => {
   try {
@@ -24,27 +25,39 @@ router.post("/", async (req, res) => {
 });
 
 router.post("/sessions", async (req, res) => {
-  const user = await schema.User.findOne({ username: req.body.username });
+  try {
+    const user = await schema.User.findOne({ username: req.body.username });
+    if (!user)
+      return res.status(400).send({
+        error: {
+          username: { message: "Username not found." },
+        },
+      });
+    const isMatch = await user.checkPassword(req.body.password);
 
-  if (!user)
-    return res.status(400).send({
-      error: {
-        username: { message: "Username not found." },
-      },
-    });
+    if (!isMatch)
+      return res.status(400).send({
+        error: {
+          password: { message: "Password is wrong." },
+        },
+      });
+    user.generateToken();
+    await user.save({ validateBeforeSave: false });
 
-  const isMatch = await user.checkPassword(req.body.password);
+    res.send(user);
+  } catch (error) {
+    res.status(400).send(error);
+  }
+});
 
-  if (!isMatch)
-    res.status(400).send({
-      error: {
-        password: { message: "Password is wrong." },
-      },
-    });
-  user.generateToken();
-  await user.save({ validateBeforeSave: false });
-
-  res.send(user);
+router.post("/log-out", authorizationMiddleware, async (req, res) => {
+  try {
+    req.user.generateToken();
+    await req.user.save({ validateBeforeSave: false });
+    res.send({ message: "user loged out" });
+  } catch (error) {
+    res.status(400).send(error);
+  }
 });
 
 router.delete("/", async (req, res) => {

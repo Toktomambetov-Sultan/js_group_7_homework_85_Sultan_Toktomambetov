@@ -14,7 +14,7 @@ const App = () => {
     <Layout>
       <Switch>
         <Route path="/" exact component={HomePage} />
-        {user.token && (
+        {user?.token && (
           <>
             <Route path="/music/" exact component={AuthorPage} />
             <Route path="/music/:author" exact component={AlbumPage} />

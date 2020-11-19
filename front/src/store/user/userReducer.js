@@ -7,7 +7,7 @@ import {
 } from "../actionsTypes";
 
 const InittialState = {
-  user: {},
+  user: null,
   authorizationError: null,
   registrationError: null,
   isLoading: false,
