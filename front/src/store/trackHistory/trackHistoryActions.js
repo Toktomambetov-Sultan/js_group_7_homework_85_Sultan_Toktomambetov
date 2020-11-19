@@ -33,12 +33,8 @@ export const addTrack = (id) => {
       const headers = {
         Authorization: getState().user.user?.token,
       };
-      const response = await axiosOrder.post(
-        "/track_history",
-        { track: id },
-        { headers }
-      );
-      dispatch(setTrackList(response.data));
+
+      await axiosOrder.post("/track_history", { track: id }, { headers });
     } catch (error) {
       fetchError(error);
     }

@@ -13,8 +13,6 @@ const TrackHistoryModel = new Schema({
     type: Schema.Types.ObjectId,
     ref: "Track",
     required: true,
-    unique: true,
-    validate: uniqueValidate("TrackHistory", "track"),
   },
   __datetime: {
     type: Date,

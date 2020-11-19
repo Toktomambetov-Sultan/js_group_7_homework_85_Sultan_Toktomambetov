@@ -7,7 +7,7 @@ import { registration } from "../../store/user/userActions";
 const RegistrationPage = () => {
   const state = useSelector((state) => state.user);
   const dispatch = useDispatch();
-  const registrationHandler = async (data) => dispatch(registration(data));
+  const registrationHandler = (data) => dispatch(registration(data));
   const [currentUser, setCurrentUser] = useState({
     username: "",
     password: "",

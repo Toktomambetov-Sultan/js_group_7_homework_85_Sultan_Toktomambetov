@@ -2,29 +2,26 @@ import { CssBaseline, Grid } from "@material-ui/core";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import TrackItem from "../../components/TrackItem/TrackItem";
-import { getData, setParentData } from "../../store/music/musicActions";
+import { setParentData } from "../../store/music/musicActions";
 import { addTrack } from "../../store/trackHistory/trackHistoryActions";
+import { getTracksData } from "../../store/track/trackActions";
 
 const TrackPage = (props) => {
-  const state = useSelector((state) => state.music);
+  const state = useSelector((state) => state.track);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getData("/tracks?album=" + props.match.params.album));
+    dispatch(getTracksData("/tracks?album=" + props.match.params.album));
     dispatch(setParentData(props.match.params));
   }, [dispatch, props.match.params]);
-  const addTrackHandler = (id) => {
+  const onClick = (id) => {
     dispatch(addTrack(id));
   };
-  const onClick = (id) => {
-    addTrackHandler(id);
-  };
-
   return (
     <div>
       <CssBaseline />
       <Grid container alignItems="stretch" spacing={1}>
-        {state.currentData.map((track) => (
+        {state.data.map((track) => (
           <TrackItem
             key={track._id}
             track={track}

@@ -19,10 +19,10 @@ router.post("/", authorizationMiddleware, async (req, res) => {
 });
 router.get("/", authorizationMiddleware, async (req, res) => {
   try {
-    const events = (
-      await schema.TrackHistory.find({
-        user: req.user._id,
-      }).populate({
+    const events = await schema.TrackHistory.find({
+      user: req.user._id,
+    })
+      .populate({
         path: "track",
         populate: {
           path: "album",
@@ -31,7 +31,7 @@ router.get("/", authorizationMiddleware, async (req, res) => {
           },
         },
       })
-    ).sort((a, b) => a.__datetime < b.__datetime);
+      .sort({ __datetime: -1 });
     res.send(events);
   } catch (error) {
     res.status(400).send(error);
@@ -40,12 +40,12 @@ router.get("/", authorizationMiddleware, async (req, res) => {
 
 // if you want to see result.
 
-// router.delete("/", async (req, res) => {
-//   try {
-//     res.send(await schema.TrackHistory.deleteMany());
-//   } catch (error) {
-//     res.send(error);
-//   }
-// });
+router.delete("/", async (req, res) => {
+  try {
+    res.send(await schema.TrackHistory.deleteMany());
+  } catch (error) {
+    res.send(error);
+  }
+});
 
 module.exports = router;

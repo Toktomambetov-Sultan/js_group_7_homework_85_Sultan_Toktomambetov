@@ -9,6 +9,6 @@ const authorizationMiddleware = async (req, res, next) => {
   });
   if (!user) return res.status(401).send({ error: "Token is wrong." });
   req.user = user;
-  next();
+  return next();
 };
 module.exports = authorizationMiddleware;

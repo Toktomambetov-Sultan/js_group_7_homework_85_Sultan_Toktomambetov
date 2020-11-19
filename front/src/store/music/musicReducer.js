@@ -2,12 +2,10 @@ import {
   FETCH_SUCCESS,
   FETCH_REQUEST,
   FETCH_ERROR,
-  SET_CURRENT_DATA,
   SET_PARENT_DATA,
 } from "../actionsTypes";
 
 const initialState = {
-  currentData: [],
   parentData: {},
   pageParams: {},
   isLoading: false,
@@ -30,11 +28,6 @@ const musicReducer = (state = initialState, action) => {
         ...state,
         isLoading: false,
         error: action.error,
-      };
-    case SET_CURRENT_DATA:
-      return {
-        ...state,
-        currentData: action.data,
       };
     case SET_PARENT_DATA:
       return {

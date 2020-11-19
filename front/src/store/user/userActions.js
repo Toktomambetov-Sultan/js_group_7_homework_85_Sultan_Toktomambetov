@@ -64,7 +64,7 @@ export const authorization = (data) => {
       dispatch(fetchSuccess());
       dispatch(push("/music"));
     } catch (error) {
-      dispatch(fetchAuthorizationError(error.response.data));
+      dispatch(fetchAuthorizationError(error.response?.data));
     }
   };
 };

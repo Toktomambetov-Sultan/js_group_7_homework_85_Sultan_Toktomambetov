@@ -4,26 +4,26 @@ import { useDispatch, useSelector } from "react-redux";
 
 import AuthorItem from "../../components/AuthorItem/AuthorItem";
 import config from "../../config";
-import { getData, setParentData } from "../../store/music/musicActions";
+import { getAuthorsData } from "../../store/author/authorAction";
+import { setParentData } from "../../store/music/musicActions";
 
 const Page = (props) => {
-  const state = useSelector((state) => state.music);
+  const state = useSelector((state) => state.author);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getData("authors"));
+    dispatch(getAuthorsData("authors"));
     dispatch(setParentData());
   }, [dispatch]);
 
   const onClick = (id) => {
     props.history.push({ pathname: `${config.localUrls.music}/${id}` });
   };
-  
   return (
     <div>
       <CssBaseline />
       <Grid container alignItems="stretch">
-        {state.currentData.map((author) => (
+        {state.data.map((author) => (
           <AuthorItem
             key={author._id}
             author={author}
