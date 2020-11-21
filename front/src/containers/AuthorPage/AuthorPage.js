@@ -4,7 +4,10 @@ import { useDispatch, useSelector } from "react-redux";
 
 import AuthorItem from "../../components/AuthorItem/AuthorItem";
 import config from "../../config";
-import { getAuthorsData } from "../../store/author/authorAction";
+import {
+  cleanAuthorsData,
+  getAuthorsData,
+} from "../../store/author/authorAction";
 import { setParentData } from "../../store/music/musicActions";
 
 const Page = (props) => {
@@ -14,6 +17,7 @@ const Page = (props) => {
   useEffect(() => {
     dispatch(getAuthorsData("authors"));
     dispatch(setParentData());
+    return ()=>dispatch(cleanAuthorsData());
   }, [dispatch]);
 
   const onClick = (id) => {

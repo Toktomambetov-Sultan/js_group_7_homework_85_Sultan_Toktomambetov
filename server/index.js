@@ -13,7 +13,7 @@ const trackHistoryRouter = require("./routers/trackHistoryRouter");
 
 const run = async () => {
   try {
-    await mongoose.connect("mongodb://localhost:27017/music", {
+    await mongoose.connect(config.db.url + config.db.name, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
       useFindAndModify: false,

@@ -4,7 +4,10 @@ import { useDispatch, useSelector } from "react-redux";
 
 import AlbumItem from "../../components/AlbumItem/AlbumItem";
 import config from "../../config";
-import { getAlbumsData } from "../../store/album/albumsActions";
+import {
+  cleanAlbumsData,
+  getAlbumsData,
+} from "../../store/album/albumsActions";
 import { setParentData } from "../../store/music/musicActions";
 
 const AlbumPage = (props) => {
@@ -14,6 +17,7 @@ const AlbumPage = (props) => {
   useEffect(() => {
     dispatch(getAlbumsData("/albums?author=" + props.match.params.author));
     dispatch(setParentData(props.match.params));
+    return () => dispatch(cleanAlbumsData());
   }, [dispatch, props.match.params, props]);
   const onClick = (id) => {
     props.history.push({

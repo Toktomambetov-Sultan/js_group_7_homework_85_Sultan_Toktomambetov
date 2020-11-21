@@ -6,7 +6,8 @@
   "license": "MIT",
   "scripts": {
     "start": "node index.js",
-    "dev": "nodemon"
+    "dev": "nodemon",
+    "seed": "node fixtures.js"
   },
   "dependencies": {
     "bcrypt": "^5.0.0",

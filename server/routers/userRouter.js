@@ -50,7 +50,7 @@ router.post("/sessions", async (req, res) => {
   }
 });
 
-router.post("/log-out", authorizationMiddleware, async (req, res) => {
+router.post("/log_out", authorizationMiddleware, async (req, res) => {
   try {
     req.user.generateToken();
     await req.user.save({ validateBeforeSave: false });

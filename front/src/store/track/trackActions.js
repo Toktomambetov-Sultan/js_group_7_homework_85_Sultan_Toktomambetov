@@ -1,5 +1,5 @@
 import axiosOrder from "../../axiosOrder";
-import { SET_TRACKS_DATA } from "../actionsTypes";
+import { CLEAN_TRACKS_DATA, SET_TRACKS_DATA } from "../actionsTypes";
 import {
   fetchMusicRequest,
   fetchMusicSuccess,
@@ -8,6 +8,12 @@ import {
 
 const setData = (data) => {
   return { type: SET_TRACKS_DATA, data };
+};
+
+export const cleanTracksData = () => {
+  return {
+    type: CLEAN_TRACKS_DATA,
+  };
 };
 
 export const getTracksData = (search) => {

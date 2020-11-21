@@ -1,5 +1,5 @@
 import axiosOrder from "../../axiosOrder";
-import { SET_AUTHORS_DATA } from "../actionsTypes";
+import { CLEAN_AUTHORS_DATA, SET_AUTHORS_DATA } from "../actionsTypes";
 import {
   fetchMusicRequest,
   fetchMusicSuccess,
@@ -8,6 +8,12 @@ import {
 
 const setData = (data) => {
   return { type: SET_AUTHORS_DATA, data };
+};
+
+export const cleanAuthorsData = () => {
+  return {
+    type: CLEAN_AUTHORS_DATA,
+  };
 };
 
 export const getAuthorsData = (search) => {
