@@ -7,16 +7,16 @@ const TrackModel = new Schema({
   name: {
     type: String,
     required: true,
-    unique: true,
-    validate: {
-      validator: async (value) => {
-        const author = await mongoose.model("Track").findOne({ name: value });
-        if (author) return false;
-      },
-      message: (props) => {
-        return `Track property ${props.path} already exists.`;
-      },
-    },
+  },
+  published: {
+    type: Boolean,
+    required: true,
+    default: false,
+  },
+  user: {
+    type: Schema.Types.ObjectId,
+    ref: "User",
+    required: true,
   },
   album: {
     type: Schema.Types.ObjectId,
@@ -29,10 +29,34 @@ const TrackModel = new Schema({
   },
   count: { type: Number, default: 0 },
 });
+
+TrackModel.plugin(mongooseIdValidator);
+
 TrackModel.pre("save", async function (next) {
   this.count = (await mongoose.model("Track").countDocuments()) + 1;
   next();
 });
-TrackModel.plugin(mongooseIdValidator);
+
+TrackModel.pre("findOneAndDelete", async function (next) {
+  try {
+    const id = this.getQuery()._id;
+    await mongoose.model("TrackHistory").deleteMany({
+      track: id,
+    });
+  } catch (error) {
+    console.log(error);
+  } finally {
+    next();
+  }
+});
+
+TrackModel.pre("deleteMany", async function () {
+  const data = await mongoose.model("Track").find(this.getQuery());
+  for (item of data) {
+    await mongoose.model("TrackHistory").deleteMany({
+      track: item._id,
+    });
+  }
+});
 
 module.exports = TrackModel;

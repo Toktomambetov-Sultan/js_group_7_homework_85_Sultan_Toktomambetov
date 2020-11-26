@@ -23,6 +23,12 @@ const UserModel = new Schema({
       message: "Password is very ease.",
     },
   },
+  role: {
+    required: true,
+    default: "user",
+    type: String,
+    enum: ["admin", "user"],
+  },
   token: {
     type: String,
     required: true,

@@ -3,6 +3,7 @@ const router = express.Router();
 const schema = require("./../Models");
 
 const authorizationMiddleware = require("./../tools/routers/authorizationMiddleware");
+const permitMiddleware = require("./../tools/routers/permitMiddleware");
 
 router.get("/", authorizationMiddleware, async (req, res) => {
   try {
@@ -29,9 +30,11 @@ router.get("/", authorizationMiddleware, async (req, res) => {
   }
 });
 
-router.post("/", async (req, res) => {
-  const track = schema.Track(req.body);
+router.post("/", authorizationMiddleware, async (req, res) => {
   try {
+    delete req.body.published;
+    const track = schema.Track(req.body);
+    track.user = req.user._id;
     await track.save();
     res.send(track);
   } catch (error) {
@@ -39,10 +42,32 @@ router.post("/", async (req, res) => {
   }
 });
 
-// # if you need to use delete method for all tracks, look at down
+router.post(
+  "/accept",
+  [authorizationMiddleware, permitMiddleware("admin")],
+  async (req, res) => {
+    try {
+      const track = await schema.Track.findByIdAndUpdate(req.body.id, {
+        published: true,
+      });
+      res.send(track);
+    } catch (error) {
+      res.status(400).send(error);
+    }
+  }
+);
+router.delete(
+  "/",
+  [authorizationMiddleware, permitMiddleware("admin")],
+  async (req, res) => {
+    try {
+      const track = await schema.Track.findOneAndDelete({ _id: req.body.id });
+      res.send(track);
+    } catch (error) {
+      res.status(400).send(error);
+    }
+  }
+);
 
-router.delete("/", async (req, res) => {
-  res.send(await schema.Track.deleteMany());
-});
 
 module.exports = router;

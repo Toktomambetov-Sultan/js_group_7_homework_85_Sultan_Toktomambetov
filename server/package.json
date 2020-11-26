@@ -7,7 +7,7 @@
   "scripts": {
     "start": "node index.js",
     "dev": "nodemon",
-    "seed": "node fixtures.js"
+    "seed": "node fixtures/fixtures.js"
   },
   "dependencies": {
     "bcrypt": "^5.0.0",

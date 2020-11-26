@@ -11,16 +11,33 @@ const AuthorModel = new Schema({
     unique: true,
     validate: uniqueValidate("Author"),
   },
+  published: {
+    type: Boolean,
+    required: true,
+    default: false,
+  },
+  user: {
+    type: Schema.Types.ObjectId,
+    ref: "User",
+    required: true,
+  },
   image: { type: String, required: true },
   information: String,
 });
 
-AuthorModel.pre("deleteMany", async () => {
-  const data = await mongoose.model("Author").find();
-  await mongoose.model("Album").deleteMany();
-  for (item of data) {
-    item.image &&
-      (await fs.unlink(config.ImageUploadingDir + "/" + item.image));
+AuthorModel.pre("findOneAndDelete", async function (next) {
+  const id = this.getQuery()._id
+  const author = await mongoose.model("Author").findById(id)
+  try {
+    await mongoose.model("Album").deleteMany({
+      author: id,
+    });
+  } catch (error) {
+    console.log(error);
+  } finally {
+    author.image &&
+      (await fs.unlink(config.ImageUploadingDir + "/" + author.image));
+    next();
   }
 });
 

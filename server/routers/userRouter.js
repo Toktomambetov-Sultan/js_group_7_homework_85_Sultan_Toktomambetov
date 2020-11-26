@@ -15,6 +15,7 @@ router.get("/", async (req, res) => {
 
 router.post("/", async (req, res) => {
   try {
+    delete req.body.role;
     const user = new schema.User(req.body);
     user.generateToken();
     await user.save();

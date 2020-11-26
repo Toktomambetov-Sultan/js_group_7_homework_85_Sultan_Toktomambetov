@@ -28,6 +28,7 @@ const run = async () => {
   app.use(cors());
   app.use(express.static("public"));
   app.use(express.json());
+
   app.use("/authors", authorRouter);
   app.use("/albums", albumRouter);
   app.use("/tracks", trackRouter);
