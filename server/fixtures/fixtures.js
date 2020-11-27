@@ -13,12 +13,6 @@ mongoose.connect(config.db.url + config.db.name, {
 const db = mongoose.connection;
 
 db.once("open", async () => {
-  // await Promise.all(await fs.readdir(config.FixturesImagesDir)).map((item) =>
-  //   fs.copyFile(
-  //     `${config.FixturesImagesDir}/${item}`,
-  //     `${config.ImageUploadingDir}/${item}`
-  //   )
-  // );
   await Promise.all(
     (await fs.readdir(config.FixturesImagesDir)).map((item) =>
       fs.copyFile(

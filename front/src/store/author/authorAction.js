@@ -18,13 +18,28 @@ export const cleanAuthorsData = () => {
 
 export const getAuthorsData = (search) => {
   return async (dispatch, getState) => {
-    dispatch(fetchMusicRequest);
+    dispatch(fetchMusicRequest());
     try {
       const headers = {
         Authorization: getState().user.user?.token,
       };
       const response = await axiosOrder.get(search, { headers });
       dispatch(setData(response.data));
+      dispatch(fetchMusicSuccess());
+    } catch (error) {
+      dispatch(fetchMusicError(error));
+    }
+  };
+};
+
+export const postAuthorData = (data) => {
+  return async (dispatch, getState) => {
+    dispatch(fetchMusicRequest());
+    try {
+      const headers = {
+        Authorization: getState().user.user?.token,
+      };
+      await axiosOrder.post("/authors", data, { headers });
       dispatch(fetchMusicSuccess());
     } catch (error) {
       dispatch(fetchMusicError(error));

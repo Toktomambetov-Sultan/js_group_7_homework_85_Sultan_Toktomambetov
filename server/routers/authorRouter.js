@@ -9,7 +9,12 @@ const authorizationMiddleware = require("./../tools/routers/authorizationMiddlew
 const permitMiddleware = require("./../tools/routers/permitMiddleware");
 
 router.get("/", authorizationMiddleware, async (req, res) => {
-  res.send(await schema.Author.find(req.query).populate("user"));
+  res.send(
+    await schema.Author.find({
+      ...req.query,
+      ...(req.user.role === "admin" ? {} : { published: true }),
+    }).populate("user")
+  );
 });
 
 router.post(
