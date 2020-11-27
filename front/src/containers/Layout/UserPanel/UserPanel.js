@@ -1,12 +1,10 @@
 import {
-  Box,
   Button,
   Grid,
   Link as Mlink,
   makeStyles,
   Menu,
   MenuItem,
-  Toolbar,
 } from "@material-ui/core";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -106,9 +104,8 @@ const UserPanel = ({ open }) => {
         Create
       </Button>
       <Menu keepMounted anchorEl={anchorEl} open={Boolean(anchorEl)}>
-        <MenuItem onClick={() => changePath("/music/add_author")}>
-          Author
-        </MenuItem>
+        <MenuItem onClick={() => changePath("/add_author")}>Author</MenuItem>
+        <MenuItem onClick={() => changePath("/add_album")}>Album</MenuItem>
       </Menu>
     </Grid>
   );

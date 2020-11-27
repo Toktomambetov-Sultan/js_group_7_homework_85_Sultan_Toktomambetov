@@ -17,11 +17,13 @@ const musicReducer = (state = initialState, action) => {
       return {
         ...state,
         isLoading: true,
+        error: null,
       };
     case FETCH_SUCCESS:
       return {
         ...state,
         isLoading: false,
+        error: null,
       };
     case FETCH_ERROR:
       return {

@@ -1,12 +1,15 @@
-import React from "react";
 import {
   Box,
   Button,
   Container,
+  FormControl,
+  InputLabel,
   makeStyles,
+  Select,
   TextField,
   Typography,
 } from "@material-ui/core";
+import React from "react";
 import FileUploader from "../UI/FileUploader/FileUploader";
 
 const useStyles = makeStyles((theme) => ({
@@ -28,8 +31,9 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const AuthorForm = ({ onSubmit, onChange, error, author }) => {
+const AlbumForm = ({ onSubmit, onChange, error, album, authors }) => {
   const classes = useStyles();
+
   return (
     <Container component="main" maxWidth="md">
       <Box
@@ -39,7 +43,7 @@ const AuthorForm = ({ onSubmit, onChange, error, author }) => {
         padding={1}
         borderRadius={10}
       >
-        <Typography variant="h5">Add new author</Typography>
+        <Typography variant="h5">Add new album</Typography>
         <form onSubmit={onSubmit}>
           <TextField
             margin="normal"
@@ -48,7 +52,18 @@ const AuthorForm = ({ onSubmit, onChange, error, author }) => {
             label={error?.name?.message || "Name"}
             name="name"
             autoFocus
-            value={author.name}
+            value={album.name}
+            onChange={onChange}
+          />
+          <TextField
+            margin="normal"
+            className={classes.top}
+            error={!!error?.year}
+            label={error?.year?.message || "Year"}
+            name="year"
+            autoFocus
+            type="number"
+            value={album.year}
             onChange={onChange}
           />
           <div className={classes.Bottom}>
@@ -60,6 +75,26 @@ const AuthorForm = ({ onSubmit, onChange, error, author }) => {
                 label={error?.image?.message || "image"}
               />
             </div>
+            <FormControl variant="outlined">
+              <InputLabel htmlFor="authors-select">Author</InputLabel>
+              <Select
+                native
+                onChange={onChange}
+                label="Author"
+                className={classes.select}
+                defaultValue={authors[0]?._id}
+                inputProps={{
+                  name: "author",
+                  id: "authors-select",
+                }}
+              >
+                {authors.map((author) => (
+                  <option value={author._id} key={author._id}>
+                    {author.name}
+                  </option>
+                ))}
+              </Select>
+            </FormControl>
           </div>
 
           <Box marginTop={2} width="300px" display="inline-block">
@@ -73,4 +108,4 @@ const AuthorForm = ({ onSubmit, onChange, error, author }) => {
   );
 };
 
-export default AuthorForm;
+export default AlbumForm;

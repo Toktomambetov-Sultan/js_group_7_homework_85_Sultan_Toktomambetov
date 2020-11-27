@@ -4,10 +4,13 @@ import config from "../../config";
 
 const useStyle = makeStyles((theme) => ({
   item: {
+    margin: "10px",
+    display: "inline-block"
+  },
+  button: {
     maxWidth: "400px",
     height: "100%",
     textTransform: "inherit",
-    margin: "10px",
   },
   image: {
     width: "300px",
@@ -19,12 +22,12 @@ const useStyle = makeStyles((theme) => ({
 const AuthorItem = ({ author, onClick }) => {
   const classes = useStyle();
   return (
-    <Grid>
+    <Grid item className={classes.item}>
       <Button
         color="primary"
         onClick={onClick}
         variant="outlined"
-        className={classes.item}
+        className={classes.button}
       >
         <Grid container direction="column">
           <Grid item>

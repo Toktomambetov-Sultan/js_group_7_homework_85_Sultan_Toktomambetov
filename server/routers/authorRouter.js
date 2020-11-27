@@ -9,12 +9,15 @@ const authorizationMiddleware = require("./../tools/routers/authorizationMiddlew
 const permitMiddleware = require("./../tools/routers/permitMiddleware");
 
 router.get("/", authorizationMiddleware, async (req, res) => {
-  res.send(
-    await schema.Author.find({
+  try {
+    const authors = await schema.Author.find({
       ...req.query,
       ...(req.user.role === "admin" ? {} : { published: true }),
-    }).populate("user")
-  );
+    }).populate("user");
+    res.send(authors);
+  } catch (error) {
+    res.status(400).send(error);
+  }
 });
 
 router.post(
@@ -31,7 +34,7 @@ router.post(
     } catch (error) {
       req.file &&
         (await fs.unlink(config.ImageUploadingDir + "/" + req.file.filename));
-      res.send(error);
+      res.status(400).send(error);
     }
   }
 );

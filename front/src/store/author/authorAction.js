@@ -1,3 +1,4 @@
+import { push } from "connected-react-router";
 import axiosOrder from "../../axiosOrder";
 import { CLEAN_AUTHORS_DATA, SET_AUTHORS_DATA } from "../actionsTypes";
 import {
@@ -16,14 +17,14 @@ export const cleanAuthorsData = () => {
   };
 };
 
-export const getAuthorsData = (search) => {
+export const getAuthorsData = () => {
   return async (dispatch, getState) => {
     dispatch(fetchMusicRequest());
     try {
       const headers = {
         Authorization: getState().user.user?.token,
       };
-      const response = await axiosOrder.get(search, { headers });
+      const response = await axiosOrder.get("authors", { headers });
       dispatch(setData(response.data));
       dispatch(fetchMusicSuccess());
     } catch (error) {
@@ -39,10 +40,15 @@ export const postAuthorData = (data) => {
       const headers = {
         Authorization: getState().user.user?.token,
       };
-      await axiosOrder.post("/authors", data, { headers });
+      const formData = new FormData();
+      Object.keys(data).forEach((key) => {
+        formData.append(key, data[key]);
+      });
+      await axiosOrder.post("/authors", formData, { headers });
       dispatch(fetchMusicSuccess());
+      dispatch(push("/music"))
     } catch (error) {
-      dispatch(fetchMusicError(error));
+      dispatch(fetchMusicError(error.response?.data));
     }
   };
 };

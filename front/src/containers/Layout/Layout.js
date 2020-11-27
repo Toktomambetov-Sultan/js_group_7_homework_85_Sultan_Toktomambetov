@@ -1,23 +1,34 @@
 import {
   AppBar,
+  Backdrop,
   Box,
   Button,
+  CircularProgress,
   Container,
   Grid,
   IconButton,
   makeStyles,
   Toolbar,
-  Typography,
+  Typography
 } from "@material-ui/core";
+import AlbumIcon from "@material-ui/icons/Album";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setParentData } from "../../store/music/musicActions";
-
-import AlbumIcon from "@material-ui/icons/Album";
 import { logOut } from "../../store/user/userActions";
 import UserPanel from "./UserPanel/UserPanel";
 
+
+const useStyles = makeStyles((theme) => ({
+  backdrop: {
+    zIndex: theme.zIndex.drawer + 1,
+    color: "#fff",
+  },
+}));
+
 const Layout = ({ children }) => {
+  const classes = useStyles();
+
   const state = useSelector((state) => state.music);
   const user = useSelector((state) => state.user.user);
   const [openDrawer, setOpenDrawer] = useState(user?.token);
@@ -35,6 +46,12 @@ const Layout = ({ children }) => {
   };
   return (
     <div>
+      <Backdrop
+        className={classes.backdrop}
+        open={state.isLoading}
+      >
+        <CircularProgress color="inherit" />
+      </Backdrop>
       <AppBar component={Box} position="static" pb={2}>
         <Toolbar>
           <Container>

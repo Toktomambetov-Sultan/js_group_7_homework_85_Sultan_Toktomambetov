@@ -1,3 +1,4 @@
+import { push } from "connected-react-router";
 import axiosOrder from "../../axiosOrder";
 import { CLEAN_ALBUMS_DATA, SET_ALBUMS_DATA } from "../actionsTypes";
 import {
@@ -28,6 +29,26 @@ export const getAlbumsData = (search) => {
       dispatch(fetchMusicSuccess());
     } catch (error) {
       dispatch(fetchMusicError(error));
+    }
+  };
+};
+
+export const postAlbumData = (data) => {
+  return async (dispatch, getState) => {
+    dispatch(fetchMusicRequest());
+    try {
+      const headers = {
+        Authorization: getState().user.user?.token,
+      };
+      const formData = new FormData();
+      Object.keys(data).forEach((key) => {
+        formData.append(key, data[key]);
+      });
+      await axiosOrder.post("/albums", formData, { headers });
+      dispatch(fetchMusicSuccess());
+      dispatch(push("/music/"))
+    } catch (error) {
+      dispatch(fetchMusicError(error.response?.data));
     }
   };
 };

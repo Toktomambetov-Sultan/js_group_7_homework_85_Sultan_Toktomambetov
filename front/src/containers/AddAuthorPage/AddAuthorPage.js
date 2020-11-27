@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import AuthorForm from "../../components/AuthorForm/AuthorForm";
 import { postAuthorData } from "../../store/author/authorAction";
@@ -10,17 +10,12 @@ const AddAuthorPage = () => {
   });
   const dispatch = useDispatch();
   const state = useSelector((state) => state.music);
-  const userState = useSelector((state) => state.user);
 
   const postAuthorDataHandler = (data) => dispatch(postAuthorData(data));
-
+  
   const onFormSubmit = (event) => {
     event.preventDefault();
-    const formData = new FormData();
-    Object.keys(currentAuthorData).forEach((key) => {
-      formData.append(key, currentAuthorData[key]);
-    });
-    postAuthorDataHandler(formData);
+    postAuthorDataHandler(currentAuthorData);
   };
 
   const onFormChange = (event) => {
@@ -38,13 +33,12 @@ const AddAuthorPage = () => {
       [name]: value,
     }));
   };
-  console.log("Add author!");
   return (
     <AuthorForm
       author={currentAuthorData}
       onChange={onFormChange}
       onSubmit={onFormSubmit}
-      error={state.error?.error}
+      error={state.error?.errors}
     />
   );
 };
