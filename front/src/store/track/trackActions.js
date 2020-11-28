@@ -67,12 +67,17 @@ export const initCurrentTrack = () => {
       const headers = {
         Authorization: getState().user.user?.token,
       };
-      const authorsResponse = await axiosOrder("/authors", { headers });
+      const authorsResponse = await axiosOrder.get("/authors?published=true", {
+        headers,
+      });
       const albumsResponse =
         authorsResponse.data[0]?._id &&
-        (await axiosOrder("/albums?author=" + authorsResponse.data[0]?._id, {
-          headers,
-        }));
+        (await axiosOrder(
+          "/albums?author=" + authorsResponse.data[0]?._id + "&published=true",
+          {
+            headers,
+          }
+        ));
       const album = albumsResponse?.data[0];
       dispatch(
         setCurrentTrack({
@@ -80,6 +85,49 @@ export const initCurrentTrack = () => {
           author: album?.author._id,
         })
       );
+      dispatch(fetchMusicSuccess());
+    } catch (error) {
+      dispatch(fetchMusicError(error.response?.data));
+    }
+  };
+};
+
+export const acceptTrackData = (id) => {
+  return async (dispatch, getState) => {
+    dispatch(fetchMusicRequest());
+    try {
+      const albumId = getState().music.parentData.album._id;
+      const headers = {
+        Authorization: getState().user.user?.token,
+      };
+      await axiosOrder.post("tracks/accept", { id }, { headers });
+      const response = await axiosOrder.get("tracks?album=" + albumId, {
+        headers,
+      });
+      dispatch(setData(response.data));
+      dispatch(fetchMusicSuccess());
+    } catch (error) {
+      dispatch(fetchMusicError(error.response?.data));
+    }
+  };
+};
+
+export const deleteTrackData = (id) => {
+  return async (dispatch, getState) => {
+    dispatch(fetchMusicRequest());
+    try {
+      const albumId = getState().music.parentData.album._id;
+      const headers = {
+        Authorization: getState().user.user?.token,
+      };
+      await axiosOrder.delete("tracks", {
+        data: { id },
+        headers,
+      });
+      const response = await axiosOrder.get("tracks?album=" + albumId, {
+        headers,
+      });
+      dispatch(setData(response.data));
       dispatch(fetchMusicSuccess());
     } catch (error) {
       dispatch(fetchMusicError(error.response?.data));

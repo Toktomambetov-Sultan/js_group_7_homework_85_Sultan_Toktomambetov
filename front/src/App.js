@@ -11,23 +11,28 @@ import AddAuthorPage from "./containers/AddAuthorPage/AddAuthorPage";
 import AddAlbumPage from "./containers/AddAlbumPage/AddAlbumPage";
 import AddTrackPage from "./containers/AddTrackPage/AddTrackPage";
 
-const App = () => {
+const CustomRoute = (props) => {
   const user = useSelector((state) => state.user.user);
+  if (user?.token) {
+    return <Route {...props} />;
+  }
+  return <Redirect to="/" />;
+};
+
+const App = () => {
   return (
     <Layout>
       <Switch>
         <Route path="/" exact component={HomePage} />
-        {user?.token && (
-          <>
-            <Route path="/music/" exact component={AuthorPage} />
-            <Route path="/add_author" exact component={AddAuthorPage} />
-            <Route path="/add_album" exact component={AddAlbumPage} />
-            <Route path="/add_track" exact component={AddTrackPage} />
-            <Route path="/music/:author" exact component={AlbumPage} />
-            <Route path="/music/:author/:album" exact component={TrackPage} />
-            <Route path="/track_history" exact component={TrackHistoryPage} />
-          </>
-        )}
+
+        <CustomRoute path="/music/" exact component={AuthorPage} />
+        <CustomRoute path="/add_author" exact component={AddAuthorPage} />
+        <CustomRoute path="/add_album" exact component={AddAlbumPage} />
+        <CustomRoute path="/add_track" exact component={AddTrackPage} />
+        <CustomRoute path="/music/:author" exact component={AlbumPage} />
+        <CustomRoute path="/music/:author/:album" exact component={TrackPage} />
+        <CustomRoute path="/track_history" exact component={TrackHistoryPage} />
+
         <Redirect to="/" />
       </Switch>
     </Layout>

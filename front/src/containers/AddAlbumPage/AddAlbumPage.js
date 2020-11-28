@@ -6,7 +6,10 @@ import {
   postAlbumData,
   setCurrentAlbum,
 } from "../../store/album/albumsActions";
-import { getAuthorsData } from "../../store/author/authorAction";
+import {
+  cleanAuthorsData,
+  getAuthorsData,
+} from "../../store/author/authorAction";
 
 const AddAlbumPage = () => {
   const dispatch = useDispatch();
@@ -15,8 +18,10 @@ const AddAlbumPage = () => {
   const currentAlbumData = useSelector((state) => state.album.current);
 
   useEffect(() => {
-    dispatch(getAuthorsData());
+    dispatch(getAuthorsData("published=true"));
     dispatch(initCurrentAlbum());
+
+    return () => dispatch(cleanAuthorsData());
   }, [dispatch]);
 
   const postAlbumDataHandler = (data) => dispatch(postAlbumData(data));

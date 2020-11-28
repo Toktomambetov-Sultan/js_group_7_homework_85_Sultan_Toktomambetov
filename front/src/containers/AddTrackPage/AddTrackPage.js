@@ -1,8 +1,14 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import TrackForm from "../../components/TrackForm/TrackForm";
-import { getAlbumsData } from "../../store/album/albumsActions";
-import { getAuthorsData } from "../../store/author/authorAction";
+import {
+  cleanAlbumsData,
+  getAlbumsData,
+} from "../../store/album/albumsActions";
+import {
+  cleanAuthorsData,
+  getAuthorsData,
+} from "../../store/author/authorAction";
 import {
   initCurrentTrack,
   postTrackData,
@@ -17,14 +23,15 @@ const AddTrackPage = () => {
   const currentTrackData = useSelector((state) => state.track.current);
   useEffect(() => {
     dispatch(initCurrentTrack());
+    return () => {
+      dispatch(cleanAuthorsData());
+      dispatch(cleanAlbumsData());
+    };
   }, [dispatch]);
 
   useEffect(() => {
-    dispatch(getAuthorsData());
-  }, [dispatch, currentTrackData.author]);
-
-  useEffect(() => {
-    dispatch(getAlbumsData("author=" + currentTrackData.author));
+    dispatch(getAuthorsData("published=true"));
+    dispatch(getAlbumsData(`author=${currentTrackData.author}&published=true`));
   }, [dispatch, currentTrackData.author]);
 
   const postTrackDataHandler = (data) => dispatch(postTrackData(data));
@@ -49,7 +56,6 @@ const AddTrackPage = () => {
       })
     );
   };
-  console.log(state.error?.errors);
   return (
     <TrackForm
       track={currentTrackData}

@@ -40,3 +40,10 @@ export const addTrack = (id) => {
     }
   };
 };
+
+export const cleanTrackList = () => {
+  return {
+    type: SET_TRACK_LIST,
+    data: [],
+  };
+};

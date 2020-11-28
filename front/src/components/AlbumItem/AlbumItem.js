@@ -1,11 +1,17 @@
 import { Button, Grid, makeStyles, Typography } from "@material-ui/core";
 import React from "react";
 import config from "../../config";
+import { useSelector } from "react-redux";
+import ButtonsForAdmin from "../ButtonsForAdmin/ButtonsForAdmin";
 
 const useStyle = makeStyles((theme) => ({
   item: {
+    margin: "20px",
+    width: "333px",
+  },
+  button: {
+    flexGrow: "1",
     maxWidth: "400px",
-    height: "100%",
     textTransform: "inherit",
   },
   image: {
@@ -15,15 +21,22 @@ const useStyle = makeStyles((theme) => ({
   },
 }));
 
-const AlbumItem = ({ album, onClick }) => {
+const AlbumItem = ({ album, onClick, onDelete, onAccept }) => {
   const classes = useStyle();
+  const user = useSelector((state) => state.user.user);
   return (
-    <Grid item>
+    <Grid
+      item
+      container
+      className={classes.item}
+      direction="column"
+      justify="space-between"
+    >
       <Button
         color="primary"
         onClick={onClick}
         variant="outlined"
-        className={classes.item}
+        className={classes.button}
       >
         <Grid container direction="column">
           <Grid item>
@@ -43,6 +56,9 @@ const AlbumItem = ({ album, onClick }) => {
           </Grid>
         </Grid>
       </Button>
+      {user?.role === "admin" && (
+        <ButtonsForAdmin obj={album} onDelete={onDelete} onAccept={onAccept} />
+      )}
     </Grid>
   );
 };

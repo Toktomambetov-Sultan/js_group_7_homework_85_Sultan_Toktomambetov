@@ -2,13 +2,17 @@ import { CssBaseline, Grid } from "@material-ui/core";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import TrackUserItem from "../../components/TrackUserItem/TrackUserItem";
-import { getTrackList } from "../../store/trackHistory/trackHistoryActions";
+import {
+  cleanTrackList,
+  getTrackList,
+} from "../../store/trackHistory/trackHistoryActions";
 
 const TrackHistoryPage = () => {
   const state = useSelector((state) => state.trackHistory);
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getTrackList());
+    return () => dispatch(cleanTrackList());
   }, [dispatch]);
   return (
     <div>

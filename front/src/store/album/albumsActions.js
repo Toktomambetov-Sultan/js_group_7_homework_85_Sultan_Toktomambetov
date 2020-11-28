@@ -27,15 +27,14 @@ export const setCurrentAlbum = (data) => {
   };
 };
 
-export const getAlbumsData = (search) => {
+export const getAlbumsData = (search = "") => {
   return async (dispatch, getState) => {
     dispatch(fetchMusicRequest());
     try {
       const headers = {
         Authorization: getState().user.user?.token,
       };
-      const response = await axiosOrder.get("albums?" + search, { headers });
-      console.log(response.data);
+      const response = await axiosOrder.get(`albums?${search}`, { headers });
       dispatch(setData(response.data));
       dispatch(fetchMusicSuccess());
     } catch (error) {
@@ -64,20 +63,65 @@ export const postAlbumData = (data) => {
   };
 };
 
-export const initCurrentAlbum = (data) => {
+export const initCurrentAlbum = () => {
   return async (dispatch, getState) => {
     dispatch(fetchMusicRequest());
     try {
       const headers = {
         Authorization: getState().user.user?.token,
       };
-      const authorsResponse = await axiosOrder.get("/authors", { headers });
+      const authorsResponse = await axiosOrder.get("authors?published=true", {
+        headers,
+      });
 
       dispatch(
         setCurrentAlbum({
           author: authorsResponse.data[0]?._id,
         })
       );
+      dispatch(fetchMusicSuccess());
+    } catch (error) {
+      dispatch(fetchMusicError(error.response?.data));
+    }
+  };
+};
+
+export const acceptAlbumData = (id) => {
+  return async (dispatch, getState) => {
+    dispatch(fetchMusicRequest());
+    try {
+      const authorId = getState().music.parentData.author._id;
+      const headers = {
+        Authorization: getState().user.user?.token,
+      };
+      await axiosOrder.post("albums/accept", { id }, { headers });
+      const response = await axiosOrder.get(`albums?author=${authorId}`, {
+        headers,
+      });
+      dispatch(setData(response.data));
+      dispatch(fetchMusicSuccess());
+    } catch (error) {
+      dispatch(fetchMusicError(error.response?.data));
+    }
+  };
+};
+
+export const deleteAlbumData = (id) => {
+  return async (dispatch, getState) => {
+    dispatch(fetchMusicRequest());
+    try {
+      const authorId = getState().music.parentData.author._id;
+      const headers = {
+        Authorization: getState().user.user?.token,
+      };
+      await axiosOrder.delete("albums", {
+        data: { id },
+        headers,
+      });
+      const response = await axiosOrder.get(`albums?author=${authorId}`, {
+        headers,
+      });
+      dispatch(setData(response.data));
       dispatch(fetchMusicSuccess());
     } catch (error) {
       dispatch(fetchMusicError(error.response?.data));

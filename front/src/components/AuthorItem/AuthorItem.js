@@ -2,6 +2,7 @@ import { Button, Grid, makeStyles, Typography } from "@material-ui/core";
 import React from "react";
 import { useSelector } from "react-redux";
 import config from "../../config";
+import ButtonsForAdmin from "../ButtonsForAdmin/ButtonsForAdmin";
 
 const useStyle = makeStyles((theme) => ({
   item: {
@@ -56,33 +57,7 @@ const AuthorItem = ({ author, onClick, onAccept, onDelete }) => {
         </Grid>
       </Button>
       {user?.role === "admin" && (
-        <Grid
-          container
-          item
-          className={classes.buttons}
-          direction="row"
-          justify="space-between"
-          wrap="nowrap"
-        >
-          {!author.published && (
-            <Button
-              color="primary"
-              fullWidth
-              variant="contained"
-              onClick={onAccept}
-            >
-              accept
-            </Button>
-          )}
-          <Button
-            color="secondary"
-            fullWidth
-            variant="contained"
-            onClick={onDelete}
-          >
-            delete
-          </Button>
-        </Grid>
+        <ButtonsForAdmin obj={author} onDelete={onDelete} onAccept={onAccept} />
       )}
     </Grid>
   );

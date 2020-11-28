@@ -17,14 +17,16 @@ export const cleanAuthorsData = () => {
   };
 };
 
-export const getAuthorsData = () => {
+export const getAuthorsData = (search = "") => {
   return async (dispatch, getState) => {
     dispatch(fetchMusicRequest());
     try {
       const headers = {
         Authorization: getState().user.user?.token,
       };
-      const response = await axiosOrder.get("authors", { headers });
+      const response = await axiosOrder.get("authors?" + search, {
+        headers,
+      });
       dispatch(setData(response.data));
       dispatch(fetchMusicSuccess());
     } catch (error) {
@@ -60,8 +62,7 @@ export const acceptAuthorData = (id) => {
       const headers = {
         Authorization: getState().user.user?.token,
       };
-      const data = await axiosOrder.post("authors/accept", { id }, { headers });
-      console.log(data);
+      await axiosOrder.post("authors/accept", { id }, { headers });
       const response = await axiosOrder.get("authors", { headers });
       dispatch(setData(response.data));
       dispatch(fetchMusicSuccess());
@@ -71,18 +72,17 @@ export const acceptAuthorData = (id) => {
   };
 };
 
-export const deleteAuhorData = (id) => {
+export const deleteAuthorData = (id) => {
   return async (dispatch, getState) => {
     dispatch(fetchMusicRequest());
     try {
       const headers = {
         Authorization: getState().user.user?.token,
       };
-      const data = await axiosOrder.delete("authors", {
+      await axiosOrder.delete("authors", {
         data: { id },
         headers,
       });
-      console.log(data);
       const response = await axiosOrder.get("authors", { headers });
       dispatch(setData(response.data));
       dispatch(fetchMusicSuccess());
