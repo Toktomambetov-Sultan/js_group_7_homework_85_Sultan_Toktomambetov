@@ -7,6 +7,8 @@ import config from "../../config";
 import {
   cleanAuthorsData,
   getAuthorsData,
+  acceptAuthorData,
+  deleteAuhorData,
 } from "../../store/author/authorAction";
 import { setParentData } from "../../store/music/musicActions";
 
@@ -17,11 +19,21 @@ const Page = (props) => {
   useEffect(() => {
     dispatch(getAuthorsData("authors"));
     dispatch(setParentData());
-    return ()=>dispatch(cleanAuthorsData());
+    return () => dispatch(cleanAuthorsData());
   }, [dispatch]);
+
+  const acceptAuthorDataHandler = (id) => dispatch(acceptAuthorData(id));
+  const deleteAuhorDataHandler = (id) => dispatch(deleteAuhorData(id));
 
   const onClick = (id) => {
     props.history.push({ pathname: `${config.localUrls.music}/${id}` });
+  };
+
+  const onDelete = (id) => {
+    deleteAuhorDataHandler(id);
+  };
+  const onAccept = (id) => {
+    acceptAuthorDataHandler(id);
   };
   return (
     <div>
@@ -31,6 +43,8 @@ const Page = (props) => {
           <AuthorItem
             key={author._id}
             author={author}
+            onDelete={() => onDelete(author._id)}
+            onAccept={() => onAccept(author._id)}
             onClick={() => onClick(author._id)}
           />
         ))}

@@ -44,7 +44,7 @@ const AlbumForm = ({ onSubmit, onChange, error, album, authors }) => {
         borderRadius={10}
       >
         <Typography variant="h5">Add new album</Typography>
-        <form onSubmit={onSubmit}>
+        <form onSubmit={onSubmit} noValidate>
           <TextField
             margin="normal"
             className={classes.top}
@@ -100,7 +100,13 @@ const AlbumForm = ({ onSubmit, onChange, error, album, authors }) => {
           </div>
 
           <Box marginTop={2} width="300px" display="inline-block">
-            <Button type="submit" fullWidth variant="contained" color="primary">
+            <Button
+              type="submit"
+              disabled={!authors.length}
+              fullWidth
+              variant="contained"
+              color="primary"
+            >
               Create
             </Button>
           </Box>

@@ -32,7 +32,6 @@ const useStyles = makeStyles((theme) => ({
 
 const TrackForm = ({ onSubmit, onChange, error, track, albums, authors }) => {
   const classes = useStyles();
-
   return (
     <Container component="main" maxWidth="md">
       <Box
@@ -43,7 +42,7 @@ const TrackForm = ({ onSubmit, onChange, error, track, albums, authors }) => {
         borderRadius={10}
       >
         <Typography variant="h5">Add new track</Typography>
-        <form onSubmit={onSubmit}>
+        <form onSubmit={onSubmit} noValidate>
           <TextField
             margin="normal"
             className={classes.top}
@@ -114,7 +113,13 @@ const TrackForm = ({ onSubmit, onChange, error, track, albums, authors }) => {
           </div>
 
           <Box marginTop={2} width="300px" display="inline-block">
-            <Button type="submit" fullWidth variant="contained" color="primary">
+            <Button
+              type="submit"
+              disabled={!authors.length}
+              fullWidth
+              variant="contained"
+              color="primary"
+            >
               Create
             </Button>
           </Box>

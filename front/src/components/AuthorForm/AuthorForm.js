@@ -40,7 +40,7 @@ const AuthorForm = ({ onSubmit, onChange, error, author }) => {
         borderRadius={10}
       >
         <Typography variant="h5">Add new author</Typography>
-        <form onSubmit={onSubmit}>
+        <form onSubmit={onSubmit} noValidate>
           <TextField
             margin="normal"
             className={classes.top}

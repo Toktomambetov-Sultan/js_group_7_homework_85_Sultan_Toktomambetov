@@ -1,16 +1,20 @@
 import { Button, Grid, makeStyles, Typography } from "@material-ui/core";
 import React from "react";
+import { useSelector } from "react-redux";
 import config from "../../config";
 
 const useStyle = makeStyles((theme) => ({
   item: {
-    margin: "10px",
-    display: "inline-block"
+    margin: "20px",
+    width: "333px",
   },
   button: {
+    flexGrow: "1",
     maxWidth: "400px",
-    height: "100%",
     textTransform: "inherit",
+  },
+  buttons: {
+    marginTop: "auto",
   },
   image: {
     width: "300px",
@@ -19,10 +23,17 @@ const useStyle = makeStyles((theme) => ({
   },
 }));
 
-const AuthorItem = ({ author, onClick }) => {
+const AuthorItem = ({ author, onClick, onAccept, onDelete }) => {
   const classes = useStyle();
+  const user = useSelector((state) => state.user.user);
   return (
-    <Grid item className={classes.item}>
+    <Grid
+      item
+      container
+      className={classes.item}
+      direction="column"
+      justify="space-between"
+    >
       <Button
         color="primary"
         onClick={onClick}
@@ -44,6 +55,35 @@ const AuthorItem = ({ author, onClick }) => {
           </Grid>
         </Grid>
       </Button>
+      {user?.role === "admin" && (
+        <Grid
+          container
+          item
+          className={classes.buttons}
+          direction="row"
+          justify="space-between"
+          wrap="nowrap"
+        >
+          {!author.published && (
+            <Button
+              color="primary"
+              fullWidth
+              variant="contained"
+              onClick={onAccept}
+            >
+              accept
+            </Button>
+          )}
+          <Button
+            color="secondary"
+            fullWidth
+            variant="contained"
+            onClick={onDelete}
+          >
+            delete
+          </Button>
+        </Grid>
+      )}
     </Grid>
   );
 };

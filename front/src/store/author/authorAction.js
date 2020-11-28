@@ -46,7 +46,46 @@ export const postAuthorData = (data) => {
       });
       await axiosOrder.post("/authors", formData, { headers });
       dispatch(fetchMusicSuccess());
-      dispatch(push("/music"))
+      dispatch(push("/music"));
+    } catch (error) {
+      dispatch(fetchMusicError(error.response?.data));
+    }
+  };
+};
+
+export const acceptAuthorData = (id) => {
+  return async (dispatch, getState) => {
+    dispatch(fetchMusicRequest());
+    try {
+      const headers = {
+        Authorization: getState().user.user?.token,
+      };
+      const data = await axiosOrder.post("authors/accept", { id }, { headers });
+      console.log(data);
+      const response = await axiosOrder.get("authors", { headers });
+      dispatch(setData(response.data));
+      dispatch(fetchMusicSuccess());
+    } catch (error) {
+      dispatch(fetchMusicError(error.response?.data));
+    }
+  };
+};
+
+export const deleteAuhorData = (id) => {
+  return async (dispatch, getState) => {
+    dispatch(fetchMusicRequest());
+    try {
+      const headers = {
+        Authorization: getState().user.user?.token,
+      };
+      const data = await axiosOrder.delete("authors", {
+        data: { id },
+        headers,
+      });
+      console.log(data);
+      const response = await axiosOrder.get("authors", { headers });
+      dispatch(setData(response.data));
+      dispatch(fetchMusicSuccess());
     } catch (error) {
       dispatch(fetchMusicError(error.response?.data));
     }
