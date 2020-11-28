@@ -7,10 +7,12 @@ const permitMiddleware = require("./../tools/routers/permitMiddleware");
 
 router.get("/", authorizationMiddleware, async (req, res) => {
   try {
-    const tracksAll = await schema.Track.find().populate({
-      path: "album",
-      populate: "author",
-    });
+    const tracksAll = await schema.Track.find()
+      .populate({
+        path: "album",
+        populate: "author",
+      })
+      .populate("user");
     const tracks = tracksAll.filter((track) => {
       const author = track.album.author._id;
       const album = track.album._id;
@@ -68,6 +70,5 @@ router.delete(
     }
   }
 );
-
 
 module.exports = router;

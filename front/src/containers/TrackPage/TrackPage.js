@@ -34,6 +34,7 @@ const TrackPage = (props) => {
   const onClick = (id) => {
     dispatch(addTrack(id));
   };
+  console.log(state.data);
   return (
     <div>
       <CssBaseline />
