@@ -103,9 +103,15 @@ const UserPanel = ({ open }) => {
       >
         Create
       </Button>
-      <Menu keepMounted anchorEl={anchorEl} open={Boolean(anchorEl)}>
+      <Menu
+        keepMounted
+        anchorEl={anchorEl}
+        onClose={() => setAnchorEl(null)}
+        open={Boolean(anchorEl)}
+      >
         <MenuItem onClick={() => changePath("/add_author")}>Author</MenuItem>
         <MenuItem onClick={() => changePath("/add_album")}>Album</MenuItem>
+        <MenuItem onClick={() => changePath("/add_track")}>Track</MenuItem>
       </Menu>
     </Grid>
   );

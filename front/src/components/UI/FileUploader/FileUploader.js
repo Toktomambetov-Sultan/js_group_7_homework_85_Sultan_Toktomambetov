@@ -10,7 +10,7 @@ const useStyles = makeStyles({
   },
 });
 
-const FileUploader = ({ onChange, name, label, error }) => {
+const FileUploader = ({ onChange, name, label, error, required }) => {
   const classes = useStyles();
   const inputRef = useRef();
   const [filename, setFilename] = useState("");
@@ -39,6 +39,7 @@ const FileUploader = ({ onChange, name, label, error }) => {
         <Grid item xs>
           <TextField
             disabled
+            required={required}
             fullWidth
             error={error}
             label={label}

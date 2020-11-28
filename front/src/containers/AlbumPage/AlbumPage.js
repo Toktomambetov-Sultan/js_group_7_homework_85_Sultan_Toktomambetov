@@ -15,7 +15,7 @@ const AlbumPage = (props) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getAlbumsData("/albums?author=" + props.match.params.author));
+    dispatch(getAlbumsData("author=" + props.match.params.author));
     dispatch(setParentData(props.match.params));
     return () => dispatch(cleanAlbumsData());
   }, [dispatch, props.match.params, props]);

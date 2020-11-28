@@ -10,7 +10,6 @@ import {
   Typography,
 } from "@material-ui/core";
 import React from "react";
-import FileUploader from "../UI/FileUploader/FileUploader";
 
 const useStyles = makeStyles((theme) => ({
   top: {
@@ -31,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const AlbumForm = ({ onSubmit, onChange, error, album, authors }) => {
+const TrackForm = ({ onSubmit, onChange, error, track, albums, authors }) => {
   const classes = useStyles();
 
   return (
@@ -43,7 +42,7 @@ const AlbumForm = ({ onSubmit, onChange, error, album, authors }) => {
         padding={1}
         borderRadius={10}
       >
-        <Typography variant="h5">Add new album</Typography>
+        <Typography variant="h5">Add new track</Typography>
         <form onSubmit={onSubmit}>
           <TextField
             margin="normal"
@@ -51,34 +50,26 @@ const AlbumForm = ({ onSubmit, onChange, error, album, authors }) => {
             error={!!error?.name}
             label={error?.name?.message || "Name"}
             name="name"
-            required
             autoFocus
-            value={album.name}
+            value={track.name}
             onChange={onChange}
           />
           <TextField
             margin="normal"
             className={classes.top}
-            error={!!error?.year}
-            label={error?.year?.message || "Year"}
-            name="year"
+            error={!!error?.lasting}
+            label={error?.lasting?.message || "Lasting"}
+            name="lasting"
             autoFocus
             type="number"
-            value={album.year}
+            value={track.lasting}
             onChange={onChange}
           />
           <div className={classes.Bottom}>
-            <div className={classes.fileUploader}>
-              <FileUploader
-                name="image"
-                required
-                onChange={onChange}
-                error={!!error?.image}
-                label={error?.image?.message || "image"}
-              />
-            </div>
             <FormControl variant="outlined">
-              <InputLabel htmlFor="authors-select">Author</InputLabel>
+              <InputLabel shrink htmlFor="authors-select">
+                Author
+              </InputLabel>
               <Select
                 native
                 onChange={onChange}
@@ -97,6 +88,29 @@ const AlbumForm = ({ onSubmit, onChange, error, album, authors }) => {
                 ))}
               </Select>
             </FormControl>
+            <FormControl error={!!error?.album} variant="outlined">
+              <InputLabel shrink={!!albums.length} htmlFor="albums-select">
+                {error?.album?.message || "Album"}
+              </InputLabel>
+              <Select
+                disabled={!albums.length}
+                native
+                onChange={onChange}
+                label={error?.album?.message || "Album"}
+                className={classes.select}
+                defaultValue={albums[0]?._id}
+                inputProps={{
+                  name: "album",
+                  id: "albums-select",
+                }}
+              >
+                {albums.map((album) => (
+                  <option value={album._id} key={album._id}>
+                    {album.name}
+                  </option>
+                ))}
+              </Select>
+            </FormControl>
           </div>
 
           <Box marginTop={2} width="300px" display="inline-block">
@@ -110,4 +124,4 @@ const AlbumForm = ({ onSubmit, onChange, error, album, authors }) => {
   );
 };
 
-export default AlbumForm;
+export default TrackForm;

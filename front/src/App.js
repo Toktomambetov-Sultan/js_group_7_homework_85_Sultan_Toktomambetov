@@ -9,6 +9,7 @@ import TrackHistoryPage from "./containers/TrackHistoryPage/TrackHistoryPage";
 import TrackPage from "./containers/TrackPage/TrackPage";
 import AddAuthorPage from "./containers/AddAuthorPage/AddAuthorPage";
 import AddAlbumPage from "./containers/AddAlbumPage/AddAlbumPage";
+import AddTrackPage from "./containers/AddTrackPage/AddTrackPage";
 
 const App = () => {
   const user = useSelector((state) => state.user.user);
@@ -21,6 +22,7 @@ const App = () => {
             <Route path="/music/" exact component={AuthorPage} />
             <Route path="/add_author" exact component={AddAuthorPage} />
             <Route path="/add_album" exact component={AddAlbumPage} />
+            <Route path="/add_track" exact component={AddTrackPage} />
             <Route path="/music/:author" exact component={AlbumPage} />
             <Route path="/music/:author/:album" exact component={TrackPage} />
             <Route path="/track_history" exact component={TrackHistoryPage} />

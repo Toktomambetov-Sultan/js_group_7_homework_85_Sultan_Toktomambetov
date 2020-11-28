@@ -1,6 +1,10 @@
 import { push } from "connected-react-router";
 import axiosOrder from "../../axiosOrder";
-import { CLEAN_ALBUMS_DATA, SET_ALBUMS_DATA } from "../actionsTypes";
+import {
+  CHANGE_CURRENT_ALBUM,
+  CLEAN_ALBUMS_DATA,
+  SET_ALBUMS_DATA,
+} from "../actionsTypes";
 import {
   fetchMusicRequest,
   fetchMusicSuccess,
@@ -16,15 +20,22 @@ export const cleanAlbumsData = () => {
     type: CLEAN_ALBUMS_DATA,
   };
 };
+export const setCurrentAlbum = (data) => {
+  return {
+    type: CHANGE_CURRENT_ALBUM,
+    data,
+  };
+};
 
 export const getAlbumsData = (search) => {
   return async (dispatch, getState) => {
-    dispatch(fetchMusicRequest);
+    dispatch(fetchMusicRequest());
     try {
       const headers = {
         Authorization: getState().user.user?.token,
       };
-      const response = await axiosOrder.get(search, { headers });
+      const response = await axiosOrder.get("albums?" + search, { headers });
+      console.log(response.data);
       dispatch(setData(response.data));
       dispatch(fetchMusicSuccess());
     } catch (error) {
@@ -46,7 +57,28 @@ export const postAlbumData = (data) => {
       });
       await axiosOrder.post("/albums", formData, { headers });
       dispatch(fetchMusicSuccess());
-      dispatch(push("/music/"))
+      dispatch(push("/music/"));
+    } catch (error) {
+      dispatch(fetchMusicError(error.response?.data));
+    }
+  };
+};
+
+export const initCurrentAlbum = (data) => {
+  return async (dispatch, getState) => {
+    dispatch(fetchMusicRequest());
+    try {
+      const headers = {
+        Authorization: getState().user.user?.token,
+      };
+      const authorsResponse = await axiosOrder.get("/authors", { headers });
+
+      dispatch(
+        setCurrentAlbum({
+          author: authorsResponse.data[0]?._id,
+        })
+      );
+      dispatch(fetchMusicSuccess());
     } catch (error) {
       dispatch(fetchMusicError(error.response?.data));
     }

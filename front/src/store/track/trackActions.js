@@ -1,5 +1,10 @@
+import { push } from "connected-react-router";
 import axiosOrder from "../../axiosOrder";
-import { CLEAN_TRACKS_DATA, SET_TRACKS_DATA } from "../actionsTypes";
+import {
+  CHANGE_CURRENT_TRACK,
+  CLEAN_TRACKS_DATA,
+  SET_TRACKS_DATA,
+} from "../actionsTypes";
 import {
   fetchMusicRequest,
   fetchMusicSuccess,
@@ -10,6 +15,13 @@ const setData = (data) => {
   return { type: SET_TRACKS_DATA, data };
 };
 
+export const setCurrentTrack = (data) => {
+  return {
+    type: CHANGE_CURRENT_TRACK,
+    data,
+  };
+};
+
 export const cleanTracksData = () => {
   return {
     type: CLEAN_TRACKS_DATA,
@@ -18,7 +30,7 @@ export const cleanTracksData = () => {
 
 export const getTracksData = (search) => {
   return async (dispatch, getState) => {
-    dispatch(fetchMusicRequest);
+    dispatch(fetchMusicRequest());
     try {
       const headers = {
         Authorization: getState().user.user?.token,
@@ -28,6 +40,49 @@ export const getTracksData = (search) => {
       dispatch(fetchMusicSuccess());
     } catch (error) {
       dispatch(fetchMusicError(error));
+    }
+  };
+};
+
+export const postTrackData = (data) => {
+  return async (dispatch, getState) => {
+    dispatch(fetchMusicRequest());
+    try {
+      const headers = {
+        Authorization: getState().user.user?.token,
+      };
+      await axiosOrder.post("/tracks", data, { headers });
+      dispatch(fetchMusicSuccess());
+      dispatch(push("/music"));
+    } catch (error) {
+      dispatch(fetchMusicError(error.response?.data));
+    }
+  };
+};
+
+export const initCurrentTrack = () => {
+  return async (dispatch, getState) => {
+    dispatch(fetchMusicRequest());
+    try {
+      const headers = {
+        Authorization: getState().user.user?.token,
+      };
+      const authorsResponse = await axiosOrder("/authors", { headers });
+      const albumsResponse =
+        authorsResponse.data[0]?._id &&
+        (await axiosOrder("/albums?author=" + authorsResponse.data[0]?._id, {
+          headers,
+        }));
+      const album = albumsResponse?.data[0];
+      dispatch(
+        setCurrentTrack({
+          album: album?._id,
+          author: album?.author._id,
+        })
+      );
+      dispatch(fetchMusicSuccess());
+    } catch (error) {
+      dispatch(fetchMusicError(error.response?.data));
     }
   };
 };

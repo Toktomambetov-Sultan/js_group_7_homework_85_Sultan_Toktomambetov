@@ -1,7 +1,17 @@
-import { CLEAN_TRACKS_DATA, SET_TRACKS_DATA } from "../actionsTypes";
+import {
+  CHANGE_CURRENT_TRACK,
+  CLEAN_TRACKS_DATA,
+  SET_TRACKS_DATA,
+} from "../actionsTypes";
 
 const initialState = {
   data: [],
+  current: {
+    name: "",
+    lasting: "",
+    author: null,
+    album: null,
+  },
 };
 const reducer = (state = initialState, action) => {
   switch (action.type) {
@@ -14,6 +24,14 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         data: [],
+      };
+    case CHANGE_CURRENT_TRACK:
+      return {
+        ...state,
+        current: {
+          ...state.current,
+          ...action.data,
+        },
       };
     default:
       return {

@@ -1,21 +1,22 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import AlbumForm from "../../components/AlbumForm/AlbumForm";
-import { postAlbumData } from "../../store/album/albumsActions";
+import {
+  initCurrentAlbum,
+  postAlbumData,
+  setCurrentAlbum,
+} from "../../store/album/albumsActions";
 import { getAuthorsData } from "../../store/author/authorAction";
 
 const AddAlbumPage = () => {
-  const [currentAlbumData, setCurrentAlbumData] = useState({
-    name: "",
-    year: "",
-    image: null,
-  });
   const dispatch = useDispatch();
   const state = useSelector((state) => state.music);
   const authorState = useSelector((state) => state.author);
+  const currentAlbumData = useSelector((state) => state.album.current);
 
   useEffect(() => {
     dispatch(getAuthorsData());
+    dispatch(initCurrentAlbum());
   }, [dispatch]);
 
   const postAlbumDataHandler = (data) => dispatch(postAlbumData(data));
@@ -35,10 +36,11 @@ const AddAlbumPage = () => {
       default:
         value = event.target.value;
     }
-    setCurrentAlbumData((prevState) => ({
-      ...prevState,
-      [name]: value,
-    }));
+    dispatch(
+      setCurrentAlbum({
+        [name]: value,
+      })
+    );
   };
   return (
     <AlbumForm
