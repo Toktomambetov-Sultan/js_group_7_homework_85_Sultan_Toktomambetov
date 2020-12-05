@@ -26,7 +26,7 @@ const useStyles = makeStyles((theme) => ({
     color: "#fff",
   },
   displayName: {
-    marginLeft: "5px",
+    margin: "5px",
   },
 }));
 
@@ -65,10 +65,10 @@ const Layout = ({ children }) => {
                       <Avatar
                         alt="person image"
                         src={user?.avatarImage || config.usersData.defaultImg}
-                        className={classes.orange}
-                        
                       />
-                      <Typography variant="h6">{user?.displayName}</Typography>
+                      <Typography className={classes.displayName} variant="h6">
+                        {user?.displayName}
+                      </Typography>
                     </Grid>
                   </div>
                 )}
@@ -79,6 +79,7 @@ const Layout = ({ children }) => {
                   disabled={!user?.token}
                 >
                   <AlbumIcon />
+                  Music
                 </IconButton>
 
                 {user?.token && (

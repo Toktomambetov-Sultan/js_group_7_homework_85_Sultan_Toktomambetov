@@ -56,7 +56,18 @@ const UserForm = ({
               fullWidth
               label={error?.displayName?.message || "Display name"}
               name="displayName"
-              value={user.username}
+              value={user.displayName}
+              onChange={onChange}
+              autoFocus
+            />
+            <TextField
+              variant="outlined"
+              margin="normal"
+              error={!!error?.avatarImage}
+              fullWidth
+              label={error?.avatarImage?.message || "Avatar"}
+              name="avatarImage"
+              value={user.avatarImage}
               onChange={onChange}
               autoFocus
             />
