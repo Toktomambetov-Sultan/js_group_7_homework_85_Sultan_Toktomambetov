@@ -86,7 +86,6 @@ router.post("/getInByGoogle", async (req, res) => {
         avatarImage: payload.picture,
       });
     }
-    console.log(user);
     user.generateToken();
     await user.save({ validateBeforeSave: false });
     res.send(user);

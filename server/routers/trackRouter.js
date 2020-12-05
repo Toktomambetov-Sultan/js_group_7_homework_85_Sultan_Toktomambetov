@@ -7,7 +7,10 @@ const permitMiddleware = require("./../tools/routers/permitMiddleware");
 
 router.get("/", authorizationMiddleware, async (req, res) => {
   try {
-    const tracksAll = await schema.Track.find()
+    const tracksAll = await schema.Track.find({
+      ...req.query,
+      ...(req.user.role === "admin" ? {} : { published: true }),
+    })
       .populate({
         path: "album",
         populate: "author",

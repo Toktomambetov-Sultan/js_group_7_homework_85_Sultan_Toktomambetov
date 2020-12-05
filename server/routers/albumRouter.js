@@ -12,7 +12,12 @@ router.get("/", authorizationMiddleware, async (req, res) => {
   let albums;
   try {
     albums = (
-      await schema.Album.find(req.query).populate("author").populate("user")
+      await schema.Album.find({
+        ...req.query,
+        ...(req.user.role === "admin" ? {} : { published: true }),
+      })
+        .populate("author")
+        .populate("user")
     ).sort((a, b) => a.year > b.year);
   } catch (error) {
     res.status(400).send(error);
