@@ -34,6 +34,7 @@ const AuthorizationPage = () => {
       error={state.authorizationError?.error}
       user={currentUser}
       color="red"
+      hide
       onChange={onChange}
       onSubmit={onSubmit}
     />

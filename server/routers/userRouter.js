@@ -1,8 +1,12 @@
 const express = require("express");
 const schema = require("./../Models");
 const router = express.Router();
-const bcrypt = require("bcrypt");
 const authorizationMiddleware = require("./../tools/routers/authorizationMiddleware");
+const { default: Axios } = require("axios");
+const { OAuth2Client } = require("google-auth-library");
+const config = require("../config");
+
+const client = new OAuth2Client(config.GoogleClientId);
 
 router.get("/", async (req, res) => {
   try {
@@ -44,7 +48,6 @@ router.post("/sessions", async (req, res) => {
       });
     user.generateToken();
     await user.save({ validateBeforeSave: false });
-
     res.send(user);
   } catch (error) {
     res.status(400).send(error);
@@ -63,6 +66,33 @@ router.post("/log_out", authorizationMiddleware, async (req, res) => {
 
 router.delete("/", async (req, res) => {
   return res.send(await schema.User.deleteMany());
+});
+
+router.post("/getInByGoogle", async (req, res) => {
+  try {
+    const { tokenId } = req.body;
+    const response = await client.verifyIdToken({
+      idToken: tokenId,
+      audience: config.GoogleClientId,
+    });
+    const payload = response.getPayload();
+    let user = await schema.User.findOne({
+      username: payload.email,
+    });
+    if (!user) {
+      user = new schema.User({
+        username: payload.email,
+        displayName: payload.name,
+        avatarImage: payload.picture,
+      });
+    }
+    console.log(user);
+    user.generateToken();
+    await user.save({ validateBeforeSave: false });
+    res.send(user);
+  } catch (error) {
+    res.status(400).send(error);
+  }
 });
 
 module.exports = router;

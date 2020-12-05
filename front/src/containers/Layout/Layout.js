@@ -1,5 +1,6 @@
 import {
   AppBar,
+  Avatar,
   Backdrop,
   Box,
   Button,
@@ -9,20 +10,23 @@ import {
   IconButton,
   makeStyles,
   Toolbar,
-  Typography
+  Typography,
 } from "@material-ui/core";
 import AlbumIcon from "@material-ui/icons/Album";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import config from "../../config";
 import { setParentData } from "../../store/music/musicActions";
 import { logOut } from "../../store/user/userActions";
 import UserPanel from "./UserPanel/UserPanel";
-
 
 const useStyles = makeStyles((theme) => ({
   backdrop: {
     zIndex: theme.zIndex.drawer + 1,
     color: "#fff",
+  },
+  displayName: {
+    marginLeft: "5px",
   },
 }));
 
@@ -46,10 +50,7 @@ const Layout = ({ children }) => {
   };
   return (
     <div>
-      <Backdrop
-        className={classes.backdrop}
-        open={state.isLoading}
-      >
+      <Backdrop className={classes.backdrop} open={state.isLoading}>
         <CircularProgress color="inherit" />
       </Backdrop>
       <AppBar component={Box} position="static" pb={2}>
@@ -58,6 +59,19 @@ const Layout = ({ children }) => {
             <Grid container direction="column">
               <Grid item container justify="space-between" alignItems="center">
                 <Typography variant="h4">Music App</Typography>
+                {user?.token && (
+                  <div>
+                    <Grid container alignItems="center" direction="row">
+                      <Avatar
+                        alt="person image"
+                        src={user?.avatarImage || config.usersData.defaultImg}
+                        className={classes.orange}
+                        
+                      />
+                      <Typography variant="h6">{user?.displayName}</Typography>
+                    </Grid>
+                  </div>
+                )}
                 <IconButton
                   onClick={changeOpenDrawer}
                   size="medium"
@@ -66,6 +80,7 @@ const Layout = ({ children }) => {
                 >
                   <AlbumIcon />
                 </IconButton>
+
                 {user?.token && (
                   <>
                     <Button

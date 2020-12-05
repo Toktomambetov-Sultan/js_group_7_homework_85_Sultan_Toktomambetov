@@ -30,12 +30,14 @@ db.once("open", async () => {
     {
       role: "admin",
       username: "Sultan",
+      displayName: "Sultan",
       password: "H1h2h3h4",
       token: nanoid(),
     },
     {
       role: "user",
       username: "Bakyt",
+      displayName: "Bakyt",
       password: "H1h2h3h4",
       token: nanoid(),
     }

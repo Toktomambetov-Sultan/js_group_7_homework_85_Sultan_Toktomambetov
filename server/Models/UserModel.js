@@ -11,6 +11,7 @@ const UserModel = new Schema({
     unique: true,
     validate: uniqueValidate("User", "username"),
   },
+  avatarImage: String,
   password: {
     required: true,
     type: String,
@@ -22,6 +23,10 @@ const UserModel = new Schema({
       },
       message: "Password is very ease.",
     },
+  },
+  displayName: {
+    required: true,
+    type: String,
   },
   role: {
     required: true,

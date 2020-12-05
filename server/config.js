@@ -5,6 +5,8 @@ module.exports = {
   ImageUploadingDir: path.join(rootDir, "public/images"),
   rootDir,
   FixturesImagesDir: path.join(rootDir, "fixtures/images"),
+  GoogleClientId:
+  "380937490366-d5b0il4o3j3too2jgu7tkatu1dr7ra9j.apps.googleusercontent.com",
   db: {
     name: "music",
     url: "mongodb://localhost:27017/",

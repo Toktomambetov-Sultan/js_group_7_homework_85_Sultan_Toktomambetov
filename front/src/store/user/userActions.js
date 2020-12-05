@@ -61,6 +61,7 @@ export const authorization = (data) => {
     try {
       const response = await axiosOrder.post("/users/sessions", data);
       dispatch(setUserData(response.data));
+      console.log(response.data);
       dispatch(fetchSuccess());
       dispatch(push("/music"));
     } catch (error) {
@@ -79,6 +80,23 @@ export const logOut = () => {
       await axiosOrder.post("/users/log_out", "", { headers });
       dispatch(setUserData(null));
       dispatch(push("/"));
+      dispatch(fetchSuccess());
+    } catch (error) {
+      dispatch(fetchAuthorizationError(error.response?.data));
+      dispatch(setUserData(null));
+      dispatch(push("/"));
+    }
+  };
+};
+
+export const getInByGoogle = (data) => {
+  return async (dispatch) => {
+    dispatch(fetchRequest());
+    try {
+      console.log(data);
+      const response = await axiosOrder.post("/users/getInByGoogle", data);
+      dispatch(setUserData(response.data));
+      dispatch(push("/music"));
       dispatch(fetchSuccess());
     } catch (error) {
       dispatch(fetchAuthorizationError(error.response?.data));

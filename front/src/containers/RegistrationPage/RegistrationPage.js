@@ -1,7 +1,7 @@
-import React, { useState } from "react";
-import UserForm from "../../components/UserForm/UserForm";
 import LockOpenRoundedIcon from "@material-ui/icons/LockOpenRounded";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import UserForm from "../../components/UserForm/UserForm";
 import { registration } from "../../store/user/userActions";
 
 const RegistrationPage = () => {

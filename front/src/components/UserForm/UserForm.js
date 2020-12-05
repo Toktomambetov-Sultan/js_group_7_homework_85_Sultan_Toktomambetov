@@ -10,8 +10,18 @@ import {
 import React from "react";
 import { useSelector } from "react-redux";
 
-const UserForm = ({ title, icon, color, user, onChange, onSubmit, error }) => {
+const UserForm = ({
+  title,
+  icon,
+  color,
+  user,
+  onChange,
+  onSubmit,
+  error,
+  hide,
+}) => {
   const isLoading = useSelector((state) => state.user.isLoading);
+  console.log(hide);
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
@@ -24,7 +34,7 @@ const UserForm = ({ title, icon, color, user, onChange, onSubmit, error }) => {
             {title}
           </Typography>
         </Box>
-        <form onSubmit={onSubmit}>
+        <form onSubmit={onSubmit} noValidate>
           <TextField
             variant="outlined"
             margin="normal"
@@ -37,6 +47,20 @@ const UserForm = ({ title, icon, color, user, onChange, onSubmit, error }) => {
             onChange={onChange}
             autoFocus
           />
+          <Box hidden={hide}>
+            <TextField
+              variant="outlined"
+              margin="normal"
+              error={!!error?.displayName}
+              required
+              fullWidth
+              label={error?.displayName?.message || "Display name"}
+              name="displayName"
+              value={user.username}
+              onChange={onChange}
+              autoFocus
+            />
+          </Box>
           <TextField
             variant="outlined"
             margin="normal"
